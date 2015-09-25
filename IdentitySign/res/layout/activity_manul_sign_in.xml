@@ -40,9 +40,9 @@
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="16sp"
-            android:hint="2015-9-24 16:24"/>
+            android:textSize="16sp"/>
         <TextView 
+            android:id="@+id/tv_showDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

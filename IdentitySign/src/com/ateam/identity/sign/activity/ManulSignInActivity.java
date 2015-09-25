@@ -1,36 +1,39 @@
 package com.ateam.identity.sign.activity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-
 import com.ateam.identity.sign.R;
+import com.ateam.identity.sign.access.StudentAccess;
+import com.ateam.identity.sign.access.I.HRequestCallback;
+import com.ateam.identity.sign.moduel.Respond;
+import com.ateam.identity.sign.moduel.Student;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist.IndexBarView;
 import com.ateam.identity.sign.widget.phonelist.PinnedHeaderAdapter;
 import com.ateam.identity.sign.widget.phonelist.PinnedHeaderListView;
 import com.team.hbase.activity.HBaseActivity;
+import com.team.hbase.utils.JSONParse;
+import com.team.hbase.widget.dialog.CustomProgressDialog;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
@@ -38,14 +41,14 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author wtw
  * 2015-9-24下午3:43:03
  */
-public class ManulSignInActivity extends HBaseActivity {
+public class ManulSignInActivity extends HBaseActivity implements OnClickListener{
 	
 	// 显示数据
 	static final String[] ITEMS = new String[] { "阿木","魏天武","魏天文","魏阿","East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
 			"Eritrea", "Estonia", "Ethiopia", "Faeroe Islands", "Falkland Islands", "Fiji", "Finland", "Afghanistan",
 			"Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
 			"Antigua and Barbuda", "Argentina","小留","小魏","理他","周下款","李晓伟", "Armenia"};
-	private ArrayList<String> mItems;// 获取的数据
+	private ArrayList<String> mItems=new ArrayList<String>();// 获取的数据
 	private ArrayList<Integer> mListSectionPos;// 数据中含有的字母保存
 	private ArrayList<String> mListItems;// 要进行显示的数组
 	private PinnedHeaderListView mListView;// 显示数据的listview
@@ -54,6 +57,9 @@ public class ManulSignInActivity extends HBaseActivity {
 	private TextView mEmptyView;// empty view
 	private TextView mTvStudentName;//选中的学员名称
 	private TextView mTvTime;//获取当前时间
+	private TextView mTvShowDate;
+	private ArrayList<Student> mListStudent;//获取的学员信息
+	private CustomProgressDialog dialog;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -62,25 +68,18 @@ public class ManulSignInActivity extends HBaseActivity {
 		setBaseContentView(R.layout.activity_manul_sign_in);
 		setActionBarTitle("手动签到");
 		setupViews();
-		// for handling configuration change
-		if (savedInstanceState != null) {
-			mListItems = savedInstanceState.getStringArrayList("mListItems");
-			mListSectionPos = savedInstanceState.getIntegerArrayList("mListSectionPos");
-			if (mListItems != null && mListItems.size() > 0 && mListSectionPos != null && mListSectionPos.size() > 0) {
-				setListAdaptor();
-			}
-			String constraint = savedInstanceState.getString("constraint");
-			if (constraint != null && constraint.length() > 0) {
-				setIndexBarViewVisibility(constraint);
-			}
-		} else {
-			new Poplulate().execute(mItems);
-		}
+		new Poplulate().execute(mItems);
+//		getStudentList();
 	}
 	
 	private void setupViews() {
+		dialog=new CustomProgressDialog(this,"学生列表获取中...");
 		mTvStudentName=(TextView)findViewById(R.id.tv_studentName);
 		mTvTime=(TextView)findViewById(R.id.tv_time);
+		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
+		mTvShowDate.setOnClickListener(this);
+		mTvShowDate.setClickable(true);
+		findViewById(R.id.btn_signin).setOnClickListener(this);
 		mTvTime.setText(SysUtil.getNowTime());
 		mLoadingView = (ProgressBar) findViewById(R.id.loading_view);
 		mListView = (PinnedHeaderListView) findViewById(R.id.list_view);
@@ -90,12 +89,79 @@ public class ManulSignInActivity extends HBaseActivity {
 		mListItems = new ArrayList<String>();
 	}
 	
-	
 	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.tv_showDate:
+			SysUtil.showDateListener(ManulSignInActivity.this, mTvTime);
+			break;
+			
+		case R.id.btn_signin:
+			signin();
+			break;
+
+		default:
+			break;
+		}
 	}
 	
+	//获取学生信息
+	private void getStudentList(){
+		dialog.show();
+		HRequestCallback<Respond<List<Student>>> request=new HRequestCallback<Respond<List<Student>>>() {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public Respond<List<Student>> parseJson(String jsonStr) {
+				// TODO Auto-generated method stub
+				Type type = new com.google.gson.reflect.TypeToken<Respond<Student>>() {
+				}.getType();
+				return (Respond<List<Student>>) JSONParse.jsonToObject(
+						jsonStr, type);
+			}
+			
+			@Override
+			public void onSuccess(Respond<List<Student>> result) {
+				// TODO Auto-generated method stub
+				mListStudent=(ArrayList<Student>) result.getDatas();
+				for (int i = 0; i < mListStudent.size(); i++) {
+					mItems.add(mListStudent.get(i).getName()+" "+mListStudent.get(i).getCardNum());
+				}
+				new Poplulate().execute(mItems);
+			}
+		};
+		StudentAccess<List<Student>> access=new StudentAccess<List<Student>>(ManulSignInActivity.this, request);
+		access.findStudent("");
+	}
+	
+	//签到
+	private void signin(){
+		dialog=new CustomProgressDialog(this, "签到中...");
+		dialog.show();
+		HRequestCallback<Respond<Student>> request=new HRequestCallback<Respond<Student>>() {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public Respond<Student> parseJson(String jsonStr) {
+				// TODO Auto-generated method stub
+				Type type = new com.google.gson.reflect.TypeToken<Respond<Student>>() {
+				}.getType();
+				return (Respond<Student>) JSONParse.jsonToObject(
+						jsonStr, type);
+			}
+			
+			@Override
+			public void onSuccess(Respond<Student> result) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		StudentAccess<Student> access=new StudentAccess<Student>(ManulSignInActivity.this, request);
+		access.signIn("", "");
+	}
+	
+	//设置旁边滚动条，头部
 	private void setListAdaptor() {
 		// create instance of PinnedHeaderAdapter and set adapter to list view
 		mAdaptor = new PinnedHeaderAdapter(this, mListItems, mListSectionPos);
@@ -130,6 +196,104 @@ public class ManulSignInActivity extends HBaseActivity {
 		});
 	}
 
+
+	// 处理数据
+	private class Poplulate extends AsyncTask<ArrayList<String>, Void, Void> {
+
+		private void showLoading(View contentView, View loadingView, View emptyView) {
+			contentView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.VISIBLE);
+			emptyView.setVisibility(View.GONE);
+		}
+
+		private void showContent(View contentView, View loadingView, View emptyView) {
+			contentView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+			emptyView.setVisibility(View.GONE);
+		}
+
+		private void showEmptyText(View contentView, View loadingView, View emptyView) {
+			contentView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.GONE);
+			emptyView.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// show loading indicator
+			showLoading(mListView, mLoadingView, mEmptyView);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Void doInBackground(ArrayList<String>... params) {
+			mListItems.clear();
+			mListSectionPos.clear();
+			ArrayList<String> items = params[0];
+			if (mItems.size() > 0) {
+				Collections.sort(items, new SortIgnoreCase());
+				String prev_section = "";
+				for (String current_item : items) {
+					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+					Matcher ms1 = p.matcher(current_item);
+					String current_section;
+					if(ms1.find()){
+						current_section = SysUtil.converterToPinYin(current_item).substring(0, 1).toUpperCase(Locale.getDefault());
+					}else{
+						current_section = current_item.substring(0, 1).toUpperCase(Locale.getDefault());
+					}
+					if (!prev_section.equals(current_section)) {
+						mListItems.add(current_section);
+						mListItems.add(current_item);
+						// array list of section positions
+						mListSectionPos.add(mListItems.indexOf(current_section));
+						prev_section = current_section;
+					} else {
+						mListItems.add(current_item);
+					}
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			dialog.dismiss();
+			if (!isCancelled()) {
+				if (mListItems.size() <= 0) {
+					showEmptyText(mListView, mLoadingView, mEmptyView);
+				} else {
+					setListAdaptor();
+					showContent(mListView, mLoadingView, mEmptyView);
+				}
+			}
+			super.onPostExecute(result);
+		}
+	}
+
+	/**
+	 * 对数组进行排序
+	 * @author wtw
+	 * 2015-9-24下午1:38:32
+	 */
+	public class SortIgnoreCase implements Comparator<String> {
+		public int compare(String s1, String s2) {
+			// 用来判断是否有中文字符，有的话进行转换为拼音添加
+				Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+				Matcher ms1 = p.matcher(s1);
+				Matcher ms2 = p.matcher(s2);
+				if (ms1.find()&&ms2.find()) {
+					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(SysUtil.converterToPinYin(s2));
+				}else if(ms1.find()&&!ms2.find()){
+					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(s2);
+				}else if(!ms1.find()&&ms2.find()){
+					return s1.compareToIgnoreCase(SysUtil.converterToPinYin(s2));
+				}else{
+					return s1.compareToIgnoreCase(s2);
+				}
+		}
+	}
+	
 	public class ListFilter extends Filter {
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
@@ -178,115 +342,6 @@ public class ManulSignInActivity extends HBaseActivity {
 		} else {
 			mListView.setIndexBarVisibility(true);
 		}
-	}
-
-	// sort array and extract sections in background Thread here we use
-	// AsyncTask
-	private class Poplulate extends AsyncTask<ArrayList<String>, Void, Void> {
-
-		private void showLoading(View contentView, View loadingView, View emptyView) {
-			contentView.setVisibility(View.GONE);
-			loadingView.setVisibility(View.VISIBLE);
-			emptyView.setVisibility(View.GONE);
-		}
-
-		private void showContent(View contentView, View loadingView, View emptyView) {
-			contentView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-			emptyView.setVisibility(View.GONE);
-		}
-
-		private void showEmptyText(View contentView, View loadingView, View emptyView) {
-			contentView.setVisibility(View.GONE);
-			loadingView.setVisibility(View.GONE);
-			emptyView.setVisibility(View.VISIBLE);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// show loading indicator
-			showLoading(mListView, mLoadingView, mEmptyView);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Void doInBackground(ArrayList<String>... params) {
-			mListItems.clear();
-			mListSectionPos.clear();
-			ArrayList<String> items = params[0];
-			if (mItems.size() > 0) {
-				Collections.sort(items, new SortIgnoreCase());
-				String prev_section = "";
-				for (String current_item : items) {
-					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-					Matcher ms1 = p.matcher(current_item);
-					String current_section;
-					if(ms1.find()){
-						current_section = SysUtil.converterToPinYin(current_item).substring(0, 1).toUpperCase(Locale.getDefault());
-					}else{
-						current_section = current_item.substring(0, 1).toUpperCase(Locale.getDefault());
-					}
-
-					if (!prev_section.equals(current_section)) {
-						mListItems.add(current_section);
-						mListItems.add(current_item);
-						// array list of section positions
-						mListSectionPos.add(mListItems.indexOf(current_section));
-						prev_section = current_section;
-					} else {
-						mListItems.add(current_item);
-					}
-				}
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			if (!isCancelled()) {
-				if (mListItems.size() <= 0) {
-					showEmptyText(mListView, mLoadingView, mEmptyView);
-				} else {
-					setListAdaptor();
-					showContent(mListView, mLoadingView, mEmptyView);
-				}
-			}
-			super.onPostExecute(result);
-		}
-	}
-
-	/**
-	 * 对数组进行排序
-	 * @author wtw
-	 * 2015-9-24下午1:38:32
-	 */
-	public class SortIgnoreCase implements Comparator<String> {
-		public int compare(String s1, String s2) {
-			// 用来判断是否有中文字符，有的话进行转换为拼音添加
-				Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-				Matcher ms1 = p.matcher(s1);
-				Matcher ms2 = p.matcher(s2);
-				if (ms1.find()&&ms2.find()) {
-					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(SysUtil.converterToPinYin(s2));
-				}else if(ms1.find()&&!ms2.find()){
-					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(s2);
-				}else if(!ms1.find()&&ms2.find()){
-					return s1.compareToIgnoreCase(SysUtil.converterToPinYin(s2));
-				}else{
-					return s1.compareToIgnoreCase(s2);
-				}
-		}
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		if (mListItems != null && mListItems.size() > 0) {
-			outState.putStringArrayList("mListItems", mListItems);
-		}
-		if (mListSectionPos != null && mListSectionPos.size() > 0) {
-			outState.putIntegerArrayList("mListSectionPos", mListSectionPos);
-		}
-		super.onSaveInstanceState(outState);
 	}
 
 }

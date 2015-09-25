@@ -2,7 +2,7 @@ package com.ateam.identity.sign.widget.datewheel;
 
 import java.util.Calendar;
 
-import com.ateam.qc.R;
+import com.ateam.identity.sign.R;
 
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
@@ -102,7 +102,7 @@ public class DateTimeDialog extends Dialog {
 		// year
 		mCurYear = calendar.get(Calendar.YEAR);
 		int minYear=mCurYear-5;
-		int maxYear=mCurYear+1;
+		int maxYear=mCurYear+5;
 		int index=mCurYear-minYear;
 		mYearAdapter=new DateNumericAdapter(getContext(),minYear , maxYear, index);
 		mWheelYear.setViewAdapter(mYearAdapter);
@@ -135,7 +135,7 @@ public class DateTimeDialog extends Dialog {
 							+ "-" + fixZoer(intDay)
 						+ " "
 						+ fixZoer(intHour) + ":"
-						+ fixZoer(intMins) + ":00";
+						+ fixZoer(intMins);
 				}
 				dateTemeChangeListener.onConfirmDatetime(datetime);
 				DateTimeDialog.this.dismiss();

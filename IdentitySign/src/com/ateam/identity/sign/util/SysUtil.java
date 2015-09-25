@@ -1,11 +1,18 @@
 package com.ateam.identity.sign.util;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import com.ateam.identity.sign.R;
+import com.ateam.identity.sign.widget.datewheel.DateTimeDialog;
+import com.ateam.identity.sign.widget.datewheel.DateTimeDialog.OnDateTimeChangeListener;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -24,7 +31,7 @@ public class SysUtil {
 	@SuppressLint("SimpleDateFormat")
 	public static String getNowTime() {
 		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy年MM月dd日 HH:mm:ss");
+				"yyyy年MM月dd日 HH:mm");
 		Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
 		String str = formatter.format(curDate);
 		return str;
@@ -55,4 +62,31 @@ public class SysUtil {
 			return null;
 		}
 	}
+	
+	/**
+	 * 点击日历按钮后进行的监听操作
+	 * 
+	 * @param showDate1
+	 *            :显示日历的按钮控件对象
+	 * @param editText
+	 *            :进行显示选中时间的 EditText对象
+	 */
+	public static void showDateListener(Context context,final View view) {
+		Dialog dialog = new DateTimeDialog(
+				context,
+				R.style.my_dialog_theme,
+				new OnDateTimeChangeListener() {
+
+					@Override
+					public void onConfirmDatetime(String datetime) {
+						if(view instanceof TextView){
+							((TextView)view).setText(datetime);
+						}else if(view instanceof EditText){
+							((EditText)view).setText(datetime);
+						}
+					}
+				},true);
+		dialog.show();
+	}
+	
 }

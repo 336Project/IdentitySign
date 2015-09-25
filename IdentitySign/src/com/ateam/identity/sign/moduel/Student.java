@@ -6,20 +6,28 @@ public class Student implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String IDCard;
-	private String Name;
-	public String getIDCard() {
-		return IDCard;
-	}
-	public void setIDCard(String iDCard) {
-		IDCard = iDCard;
-	}
-	public String getName() {
-		return Name;
-	}
-	public void setName(String name) {
-		Name = name;
-	}
+	private String cardNum;
+	private String name;
 	
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [cardNum=" + cardNum + ", name=" + name + "]";
+	}
 	
 }
