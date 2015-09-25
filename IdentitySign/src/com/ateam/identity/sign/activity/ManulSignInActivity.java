@@ -158,7 +158,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			}
 		};
 		StudentAccess<Student> access=new StudentAccess<Student>(ManulSignInActivity.this, request);
-		access.signIn("", "");
+//		access.signIn("", "");
 	}
 	
 	//设置旁边滚动条，头部
@@ -231,7 +231,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			mListSectionPos.clear();
 			ArrayList<String> items = params[0];
 			if (mItems.size() > 0) {
-				Collections.sort(items, new SortIgnoreCase());
+				Collections.sort(mListStudent, new SortIgnoreCase());
 				String prev_section = "";
 				for (String current_item : items) {
 					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
@@ -276,20 +276,20 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	 * @author wtw
 	 * 2015-9-24下午1:38:32
 	 */
-	public class SortIgnoreCase implements Comparator<String> {
-		public int compare(String s1, String s2) {
+	public class SortIgnoreCase implements Comparator<Student> {
+		public int compare(Student s1, Student s2) {
 			// 用来判断是否有中文字符，有的话进行转换为拼音添加
 				Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-				Matcher ms1 = p.matcher(s1);
-				Matcher ms2 = p.matcher(s2);
+				Matcher ms1 = p.matcher(s1.getName());
+				Matcher ms2 = p.matcher(s2.getName());
 				if (ms1.find()&&ms2.find()) {
-					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(SysUtil.converterToPinYin(s2));
+					return SysUtil.converterToPinYin(s1.getName()).compareToIgnoreCase(SysUtil.converterToPinYin(s2.getName()));
 				}else if(ms1.find()&&!ms2.find()){
-					return SysUtil.converterToPinYin(s1).compareToIgnoreCase(s2);
+					return SysUtil.converterToPinYin(s1.getName()).compareToIgnoreCase(s2.getName());
 				}else if(!ms1.find()&&ms2.find()){
-					return s1.compareToIgnoreCase(SysUtil.converterToPinYin(s2));
+					return s1.getName().compareToIgnoreCase(SysUtil.converterToPinYin(s2.getName()));
 				}else{
-					return s1.compareToIgnoreCase(s2);
+					return s1.getName().compareToIgnoreCase(s2.getName());
 				}
 		}
 	}

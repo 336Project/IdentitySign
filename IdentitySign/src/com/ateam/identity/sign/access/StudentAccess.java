@@ -8,6 +8,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.Respond;
+import com.ateam.identity.sign.moduel.Student;
+import com.team.hbase.utils.JSONParse;
 
 
 import android.content.Context;
@@ -34,10 +36,11 @@ public class StudentAccess<T> extends HBaseAccess<Respond<T>>{
 	}
 	
 	//签到接口
-	public void signIn(String studentIDCard,String time){
+	public void signIn(String studentIDCard,String time,ArrayList<Student> studentList){
 		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("studentIDCard", studentIDCard));
 		nvps.add(new BasicNameValuePair("time", time));
+		nvps.add(new BasicNameValuePair("studentList", JSONParse.objectToJson(studentList)));
 		execute(SIGN_IN, nvps);
 	}
 
