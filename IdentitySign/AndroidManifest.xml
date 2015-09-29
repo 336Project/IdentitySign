@@ -3,7 +3,10 @@
     package="com.ateam.identity.sign"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	<uses-sdk android:maxSdkVersion="21"
+	    android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+	
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -35,7 +38,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.ateam.identity.sign.SFZActivity"
+            android:name="com.ateam.identity.sign.activity.SFZActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,13 +48,10 @@
         </activity>
         <activity android:name="com.ateam.identity.sign.BaseActivity" >
         </activity>
+        <activity
+            android:name="com.ateam.identity.sign.activity.ManulSignInActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
-
-    <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true" />
-
-    <uses-sdk android:minSdkVersion="8" />
 
 </manifest>

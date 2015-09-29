@@ -1,7 +1,9 @@
-package com.ateam.identity.sign;
+package com.ateam.identity.sign.activity;
 
+import com.ateam.identity.sign.MyApplication;
+import com.ateam.identity.sign.R;
 
-
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,7 +24,7 @@ import android_serialport_api.ParseSFZAPI.People;
 import android_serialport_api.SerialPortManager;
 
 
-public class SFZActivity extends BaseActivity implements OnClickListener {
+public class SFZActivity extends Activity implements OnClickListener {
 	private TextView sfz_name;
 	private TextView sfz_sex;
 	private TextView sfz_nation;
@@ -47,7 +49,7 @@ public class SFZActivity extends BaseActivity implements OnClickListener {
 
 	private ProgressDialog progressDialog;
 
-
+	private MyApplication application;
 	private AsyncParseSFZ asyncParseSFZ;
 
 	private int readTime = 0;
@@ -310,10 +312,18 @@ public class SFZActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(!SerialPortManager.getInstance().isOpen()){
+			SerialPortManager.getInstance().openSerialPort();
+		}
+		Log.i("whw", "onResume="+SerialPortManager.getInstance().isOpen());
+		
 	}
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if(SerialPortManager.getInstance().isOpen()){
+			SerialPortManager.getInstance().closeSerialPort();
+		}
 	}
 	
 

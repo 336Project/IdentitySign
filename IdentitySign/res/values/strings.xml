@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">IdentitySign</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">ListviewFilter</string>
+ 	<string name="search_hint">search</string>
+	<string name="empty_list_msg">暂无学员信息</string>   
 
 </resources>
