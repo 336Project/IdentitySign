@@ -3,10 +3,13 @@ package com.ateam.identity.sign.util;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -87,6 +90,13 @@ public class SysUtil {
 					}
 				},true);
 		dialog.show();
+	}
+	
+	//密码加密
+	public static String Encryption(String str) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("md5");
+		byte[] buf = md.digest(str.getBytes());
+		return Base64EncoderByJINFA.encode(buf);
 	}
 	
 }
