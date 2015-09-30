@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:background="@drawable/background"
     android:orientation="vertical" >
 
@@ -29,7 +29,7 @@
             android:text="读三代证" />
     </LinearLayout>
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -72,18 +72,6 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="清空" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/module"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/resultInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black" />
+    </LinearLayout> -->
 
 </LinearLayout>

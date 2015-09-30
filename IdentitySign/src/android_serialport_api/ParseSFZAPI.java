@@ -11,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import cn.com.shptbm.DecodeWlt;
 
 
-import android.os.Looper;
 import android.util.Log;
 
 public class ParseSFZAPI {
@@ -48,7 +47,7 @@ public class ParseSFZAPI {
 
 	public static final int THIRD_GENERATION_CARD = 2321;
 
-	public ParseSFZAPI(Looper looper, String rootPath) {
+	public ParseSFZAPI(String rootPath) {
 		this.path = rootPath + File.separator + "wltlib";
 	}
 
@@ -60,7 +59,7 @@ public class ParseSFZAPI {
 	 * @return true：成功获取身份证信息，false：返回数据出错，可能是超时，读卡出错，寻卡失败等。
 	 */
 	public Result read(int cardType) {
-		int count = 0;
+		//int count = 0;
 		People people = null;
 		// do {
 		if (cardType == SECOND_GENERATION_CARD) {
@@ -81,7 +80,7 @@ public class ParseSFZAPI {
 
 		people = decode(buffer, length);
 		if (people == null) {
-			count++;
+			//count++;
 			result.confirmationCode = Result.FIND_FAIL;
 		} else {
 			result.confirmationCode = Result.SUCCESS;

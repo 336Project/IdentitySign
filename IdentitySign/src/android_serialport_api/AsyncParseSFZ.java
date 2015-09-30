@@ -1,172 +1,126 @@
 package android_serialport_api;
 
+import java.util.HashMap;
+import java.util.Map;
 
+import com.ateam.identity.sign.util.MyToast;
 
-
-
-
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android_serialport_api.ParseSFZAPI.People;
 import android_serialport_api.ParseSFZAPI.Result;
 
-public class AsyncParseSFZ extends Handler {
-	private static final int READ_CARD_ID = 999;
-	private static final int READ_SFZ = 1000;
-	private static final int READ_MODULE = 2000;
-	private static final int FIND_CARD_SUCCESS = 1001;
-	private static final int FIND_CARD_FAIL = 1002;
-	private static final int FIND_MODULE_SUCCESS = 1003;
-	private static final int FIND_MODULE_FAIL = 1004;
-
-	public static final int DATA_SIZE = 1295;
-
-
+public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<String, Object>>{
+	private static final String DATA = "data";
+	private static final String CODE = "code";
 	private ParseSFZAPI parseAPI;
-
-
-
-	private Handler mWorkerThreadHandler;
-
+	
+	private ProgressDialog progressDialog;
+	private Context mContext;
 	private OnReadSFZListener onReadSFZListener;
-
-	private OnReadModuleListener onReadModuleListener;
-	
-	private OnReadCardIDListener onReadCardIDListener;
-
-	public void setOnReadModuleListener(
-			OnReadModuleListener onReadModuleListener) {
-		this.onReadModuleListener = onReadModuleListener;
-	}
-
-	public void setOnReadSFZListener(OnReadSFZListener onReadSFZListener) {
+	public AsyncParseSFZ(Context context,OnReadSFZListener onReadSFZListener) {
+		super();
+		this.mContext = context;
 		this.onReadSFZListener = onReadSFZListener;
-	}
-	
-
-	public void setOnReadCardIDListener(OnReadCardIDListener onReadCardIDListener) {
-		this.onReadCardIDListener = onReadCardIDListener;
-	}
-
-	public interface OnReadModuleListener {
-		void onReadSuccess(String module);
-
-		void onReadFail(int confirmationCode);
-	}
-
-	public interface OnReadSFZListener {
-		void onReadSuccess(People people);
-
-		void onReadFail(int confirmationCode);
-	}
-	
-	public interface OnReadCardIDListener {
-		void onReadSuccess(String id);
-
-		void onReadFail();
-	}
-
-	public AsyncParseSFZ(Looper looper, String rootPath) {
-		parseAPI = new ParseSFZAPI(looper, rootPath);
-		mWorkerThreadHandler = createHandler(looper);
-	}
-
-	protected Handler createHandler(Looper looper) {
-		return new WorkerHandler(looper);
-	}
-
-	protected class WorkerHandler extends Handler {
-		public WorkerHandler(Looper looper) {
-			super(looper);
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case READ_SFZ:
-				Result resultSFZ = parseAPI.read(msg.arg1);
-				if (resultSFZ.confirmationCode == Result.SUCCESS) {
-					AsyncParseSFZ.this.obtainMessage(FIND_CARD_SUCCESS,
-							resultSFZ.resultInfo).sendToTarget();
-				} else {
-					AsyncParseSFZ.this.obtainMessage(FIND_CARD_FAIL,
-							resultSFZ.confirmationCode, -1).sendToTarget();
-				}
-				break;
-			case READ_MODULE:
-				Result resultModule = parseAPI.readModule();
-				Log.i("whw", "module=" + resultModule.resultInfo);
-				if (resultModule.confirmationCode == Result.SUCCESS) {
-					AsyncParseSFZ.this.obtainMessage(FIND_MODULE_SUCCESS,
-							resultModule.resultInfo).sendToTarget();
-				} else {
-					AsyncParseSFZ.this.obtainMessage(FIND_MODULE_FAIL,
-							resultModule.confirmationCode, -1).sendToTarget();
-				}
-				break;
-			case READ_CARD_ID:
-				AsyncParseSFZ.this.obtainMessage(READ_CARD_ID, parseAPI.readCardID()).sendToTarget();
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	public void readSFZ(int cardType) {
-		mWorkerThreadHandler.obtainMessage(READ_SFZ, cardType, -1)
-				.sendToTarget();
-	}
-
-	public void readModuleNum() {
-		mWorkerThreadHandler.obtainMessage(READ_MODULE).sendToTarget();
-	}
-	
-	public void readCardID() {
-		mWorkerThreadHandler.obtainMessage(READ_CARD_ID).sendToTarget();
+		parseAPI = new ParseSFZAPI(context.getApplicationInfo().dataDir);
 	}
 
 	@Override
-	public void handleMessage(Message msg) {
-		super.handleMessage(msg);
-		switch (msg.what) {
-		case FIND_CARD_SUCCESS:
-			if (onReadSFZListener != null) {
-				onReadSFZListener.onReadSuccess((People) msg.obj);
-			}
+	protected void onPreExecute() {
+		showProgressDialog("正在读取数据...");
+	}
+	
+	@Override
+	protected Map<String, Object> doInBackground(SFZ... params) {
+		Map<String, Object> result = new HashMap<>();
+		switch (params[0]) {
+		case SECOND://读二代证
+			Result resultSFZ = parseAPI.read(ParseSFZAPI.SECOND_GENERATION_CARD);
+			result.put(DATA, resultSFZ.resultInfo);
+			result.put(CODE, resultSFZ.confirmationCode);
 			break;
-		case FIND_CARD_FAIL:
-			if (onReadSFZListener != null) {
-				onReadSFZListener.onReadFail(msg.arg1);
-			}
-			break;
-		case FIND_MODULE_SUCCESS:
-			if (onReadModuleListener != null) {
-				onReadModuleListener.onReadSuccess((String) msg.obj);
-			}
-			break;
-		case FIND_MODULE_FAIL:
-			if (onReadModuleListener != null) {
-				onReadModuleListener.onReadFail(msg.arg1);
-			}
-			break;
-		case READ_CARD_ID:
-			if(onReadCardIDListener!= null){
-				String id = (String)msg.obj;
-				if(!TextUtils.isEmpty(id)){
-					onReadCardIDListener.onReadSuccess(id);
-				}else{
-					onReadCardIDListener.onReadFail();
-				}
-				
-			}
+		case THIRD://读三代证
+			resultSFZ = parseAPI.read(ParseSFZAPI.THIRD_GENERATION_CARD);
+			result.put(DATA, resultSFZ.resultInfo);
+			result.put(CODE, resultSFZ.confirmationCode);
 			break;
 		default:
 			break;
 		}
+		return result;
 	}
-
+	
+	@Override
+	protected void onPostExecute(Map<String, Object> result) {
+		cancleProgressDialog();
+		try {
+			if(onReadSFZListener == null) return;
+			/**
+			 * 确认码 1: 成功 2：失败 3: 超时 6：其它异常
+			 */
+			int status = (int) result.get(CODE);
+			switch(status){
+				case Result.SUCCESS:
+					onReadSFZListener.onReadSuccess((People)result.get(DATA));
+					break;
+				case Result.FIND_FAIL:
+					MyToast.showShort(mContext, "读卡失败。");
+					onReadSFZListener.onReadFail(status);
+					break;
+				case Result.TIME_OUT:
+					onReadSFZListener.onReadFail(status);
+					MyToast.showShort(mContext, "读卡超时。");
+					break;
+				case Result.OTHER_EXCEPTION:
+					onReadSFZListener.onReadFail(status);
+					MyToast.showShort(mContext, "读卡时发生异常。");
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			onReadSFZListener.onReadFail(Result.OTHER_EXCEPTION);
+			MyToast.showShort(mContext, "抱歉，发生异常。");
+		}
+		
+	}
+	/**
+	 * 
+	 * 2015-9-30 下午9:25:56
+	 * @param message
+	 * @TODO 
+	 */
+	private void showProgressDialog(String message) {
+		progressDialog = new ProgressDialog(mContext);
+		progressDialog.setMessage(message);
+		if (!progressDialog.isShowing()) {
+			progressDialog.show();
+		}
+	}
+	/**
+	 * 
+	 * 2015-9-30 下午9:26:09
+	 * @TODO
+	 */
+	private void cancleProgressDialog() {
+		if (progressDialog != null && progressDialog.isShowing()) {
+			progressDialog.cancel();
+			progressDialog = null;
+		}
+	}
+	/**
+	 * 
+	 * @author 李晓伟
+	 * 2015-9-30 下午9:21:06
+	 * @TODO IDCard type
+	 */
+	public enum SFZ{
+		SECOND,//二代证
+		THIRD//三代证
+	}
+	
+	public interface OnReadSFZListener {
+		void onReadSuccess(People people);
+		void onReadFail(int code);
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ListviewFilter</string>
+    <string name="app_name">打卡机</string>
  	<string name="search_hint">search</string>
 	<string name="empty_list_msg">暂无学员信息</string>   
 
