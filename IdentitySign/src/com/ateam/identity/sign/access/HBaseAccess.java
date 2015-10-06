@@ -58,7 +58,7 @@ public class HBaseAccess<T> implements HURL{
 	public HBaseAccess(final Context c,final HRequestCallback<T> requestCallback){
 		this.callback=requestCallback;
 		this.mContext=c;
-		dialog=new CustomProgressDialog(c, "努力加载中...");
+		dialog=new CustomProgressDialog(c, "网络请求中...");
 		initHandler();
 	}
 	private void initHandler(){

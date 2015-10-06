@@ -11,10 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ateam.identity.sign.R;
+import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.StudentAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
-import com.ateam.identity.sign.moduel.Respond;
+import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.Student;
+import com.ateam.identity.sign.moduel.StudentList;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist.IndexBarView;
@@ -109,29 +111,29 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	//获取学生信息
 	private void getStudentList(){
 		dialog.show();
-		HRequestCallback<Respond<List<Student>>> request=new HRequestCallback<Respond<List<Student>>>() {
+		HRequestCallback<StudentList> request=new HRequestCallback<StudentList>() {
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Respond<List<Student>> parseJson(String jsonStr) {
+			public StudentList parseJson(String jsonStr) {
 				// TODO Auto-generated method stub
-				Type type = new com.google.gson.reflect.TypeToken<Respond<Student>>() {
+				Type type = new com.google.gson.reflect.TypeToken<StudentList>() {
 				}.getType();
-				return (Respond<List<Student>>) JSONParse.jsonToObject(
+				return (StudentList) JSONParse.jsonToObject(
 						jsonStr, type);
 			}
 			
 			@Override
-			public void onSuccess(Respond<List<Student>> result) {
+			public void onSuccess(StudentList result) {
 				// TODO Auto-generated method stub
-				mListStudent=(ArrayList<Student>) result.getDatas();
+				mListStudent=(ArrayList<Student>) result.studentList;
 				for (int i = 0; i < mListStudent.size(); i++) {
 					mItems.add(mListStudent.get(i).getName()+" "+mListStudent.get(i).getCardNum());
 				}
 				new Poplulate().execute(mItems);
 			}
 		};
-		StudentAccess<List<Student>> access=new StudentAccess<List<Student>>(ManulSignInActivity.this, request);
+		StudentAccess access=new StudentAccess(ManulSignInActivity.this, request);
 		access.findStudent("");
 	}
 	
@@ -139,26 +141,25 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private void signin(){
 		dialog=new CustomProgressDialog(this, "签到中...");
 		dialog.show();
-		HRequestCallback<Respond<Student>> request=new HRequestCallback<Respond<Student>>() {
+		HRequestCallback<HBaseObject> request=new HRequestCallback<HBaseObject>() {
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Respond<Student> parseJson(String jsonStr) {
+			public HBaseObject parseJson(String jsonStr) {
 				// TODO Auto-generated method stub
-				Type type = new com.google.gson.reflect.TypeToken<Respond<Student>>() {
+				Type type = new com.google.gson.reflect.TypeToken<HBaseObject>() {
 				}.getType();
-				return (Respond<Student>) JSONParse.jsonToObject(
+				return (HBaseObject) JSONParse.jsonToObject(
 						jsonStr, type);
 			}
 			
 			@Override
-			public void onSuccess(Respond<Student> result) {
-				// TODO Auto-generated method stub
+			public void onSuccess(HBaseObject result) {
 				
 			}
 		};
-		StudentAccess<Student> access=new StudentAccess<Student>(ManulSignInActivity.this, request);
-//		access.signIn("", "");
+		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
+		//access.sign(signList);
 	}
 	
 	//设置旁边滚动条，头部

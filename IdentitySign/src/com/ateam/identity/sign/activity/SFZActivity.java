@@ -1,6 +1,16 @@
 package com.ateam.identity.sign.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ateam.identity.sign.R;
+import com.ateam.identity.sign.access.SignAccess;
+import com.ateam.identity.sign.access.I.HRequestCallback;
+import com.ateam.identity.sign.moduel.HBaseObject;
+import com.ateam.identity.sign.moduel.SignObject;
+import com.ateam.identity.sign.util.MyToast;
+import com.ateam.identity.sign.util.SysUtil;
+import com.team.hbase.utils.JSONParse;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -41,6 +51,8 @@ public class SFZActivity extends Activity implements OnClickListener {
 	MediaPlayer mediaPlayer = null;
 	private AsyncParseSFZ asyncSFZ ;
 	private OnReadSFZListener onReadSFZListener;
+	
+	private SignAccess mAccess;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,11 +81,32 @@ public class SFZActivity extends Activity implements OnClickListener {
 
 	private void initData() {
 		mediaPlayer = MediaPlayer.create(this, R.raw.ok);
+		mAccess = new SignAccess(this, new HRequestCallback<HBaseObject>() {
+			
+			@Override
+			public HBaseObject parseJson(String jsonStr) {
+				return (HBaseObject) JSONParse.jsonToBean(jsonStr, HBaseObject.class);
+			}
+			
+			@Override
+			public void onSuccess(HBaseObject result) {
+				if(result.isSuccess()){
+					MyToast.showShort(SFZActivity.this, "签到成功!");
+				}else{
+					MyToast.showShort(SFZActivity.this, result.getMessage());
+				}
+			}
+		});
 		onReadSFZListener = new AsyncParseSFZ.OnReadSFZListener() {
 			
 			@Override
 			public void onReadSuccess(People people) {
 				updateInfo(people);
+				//签到
+				List<SignObject> signList = new ArrayList<>();
+				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime());
+				signList.add(object);
+				mAccess.sign(signList);
 			}
 			
 			@Override

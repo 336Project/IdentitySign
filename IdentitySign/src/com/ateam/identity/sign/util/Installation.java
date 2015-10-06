@@ -1,6 +1,7 @@
 package com.ateam.identity.sign.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,20 +10,24 @@ import java.io.RandomAccessFile;
 import java.util.UUID;
 
 public class Installation {
-    private static String sID = null;
+    private static String sID = "";
     private static final String INSTALLATION = "INSTALLATION";
-    public synchronized static String id(Context context) {
+    
+    public static String getAppId(){
+    	return sID;
+    }
+    public synchronized static void init(Context context) {
         if (sID == null) {
             File installation = new File(context.getFilesDir(), INSTALLATION);
             try {
                 if (!installation.exists())
                     writeInstallationFile(installation);
                 sID = readInstallationFile(installation);
+                Log.v("Installation-----uuid", sID);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        return sID;
     }
     private static String readInstallationFile(File installation) throws IOException {
         RandomAccessFile f = new RandomAccessFile(installation, "r");
@@ -35,6 +40,7 @@ public class Installation {
         FileOutputStream out = new FileOutputStream(installation);
         String id = UUID.randomUUID().toString();
         out.write(id.getBytes());
+        out.flush();
         out.close();
     }
 }
