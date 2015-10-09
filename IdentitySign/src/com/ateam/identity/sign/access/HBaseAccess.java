@@ -160,6 +160,7 @@ public class HBaseAccess<T> implements HURL{
 					}else{
 						result=_postFile(url, nvps, files);
 					}
+					Log.e("", "result"+result);
 					if(!TextUtils.isEmpty(result)){
 						if(callback!=null){
 							T t=callback.parseJson(result);

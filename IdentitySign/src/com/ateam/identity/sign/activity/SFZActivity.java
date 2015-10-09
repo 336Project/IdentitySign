@@ -103,7 +103,7 @@ public class SFZActivity extends Activity implements OnClickListener {
 			public void onReadSuccess(People people) {
 				updateInfo(people);
 				//签到
-				List<SignObject> signList = new ArrayList<>();
+				List<SignObject> signList = new ArrayList<SignObject>();
 				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime());
 				signList.add(object);
 				mAccess.sign(signList);

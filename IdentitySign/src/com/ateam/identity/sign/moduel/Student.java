@@ -2,12 +2,13 @@ package com.ateam.identity.sign.moduel;
 
 import java.io.Serializable;
 
+//学生对象
 public class Student implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String cardNum;
-	private String name;
+	private String cardNum;//学生身份证号
+	private String name;//学生名字
 	
 	public String getCardNum() {
 		return cardNum;

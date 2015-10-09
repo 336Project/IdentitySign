@@ -33,7 +33,7 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 	
 	@Override
 	protected Map<String, Object> doInBackground(SFZ... params) {
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		switch (params[0]) {
 		case SECOND://读二代证
 			Result resultSFZ = parseAPI.read(ParseSFZAPI.SECOND_GENERATION_CARD);
@@ -59,7 +59,7 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 			/**
 			 * 确认码 1: 成功 2：失败 3: 超时 6：其它异常
 			 */
-			int status = (int) result.get(CODE);
+			int status = Integer.parseInt(String.valueOf(result.get(CODE)));	
 			switch(status){
 				case Result.SUCCESS:
 					onReadSFZListener.onReadSuccess((People)result.get(DATA));

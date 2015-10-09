@@ -27,6 +27,7 @@ import com.team.hbase.utils.JSONParse;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,11 +47,11 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ManulSignInActivity extends HBaseActivity implements OnClickListener{
 	
 	// 显示数据
-	static final String[] ITEMS = new String[] { "阿木","魏天武","魏天文","魏阿","East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
-			"Eritrea", "Estonia", "Ethiopia", "Faeroe Islands", "Falkland Islands", "Fiji", "Finland", "Afghanistan",
-			"Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
-			"Antigua and Barbuda", "Argentina","小留","小魏","理他","周下款","李晓伟", "Armenia"};
-	private ArrayList<String> mItems=new ArrayList<String>();// 获取的数据
+//	static final String[] ITEMS = new String[] { "阿木","魏天武","魏天文","魏阿","East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
+//			"Eritrea", "Estonia", "Ethiopia", "Faeroe Islands", "Falkland Islands", "Fiji", "Finland", "Afghanistan",
+//			"Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
+//			"Antigua and Barbuda", "Argentina","小留","小魏","理他","周下款","李晓伟", "Armenia"};
+//	private ArrayList<String> mItems=new ArrayList<String>();// 获取的数据
 	private ArrayList<Integer> mListSectionPos;// 数据中含有的字母保存
 	private ArrayList<String> mListItems;// 要进行显示的数组
 	private PinnedHeaderListView mListView;// 显示数据的listview
@@ -70,8 +71,8 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		setBaseContentView(R.layout.activity_manul_sign_in);
 		setActionBarTitle("手动签到");
 		setupViews();
-		new Poplulate().execute(mItems);
-//		getStudentList();
+//		new Poplulate().execute(mItems);
+		getStudentList();
 	}
 	
 	private void setupViews() {
@@ -86,7 +87,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		mLoadingView = (ProgressBar) findViewById(R.id.loading_view);
 		mListView = (PinnedHeaderListView) findViewById(R.id.list_view);
 		mEmptyView = (TextView) findViewById(R.id.empty_view);
-		mItems = new ArrayList<String>(Arrays.asList(ITEMS));
+//		mItems = new ArrayList<String>(Arrays.asList(ITEMS));
 		mListSectionPos = new ArrayList<Integer>();
 		mListItems = new ArrayList<String>();
 	}
@@ -127,14 +128,22 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onSuccess(StudentList result) {
 				// TODO Auto-generated method stub
 				mListStudent=(ArrayList<Student>) result.studentList;
-				for (int i = 0; i < mListStudent.size(); i++) {
-					mItems.add(mListStudent.get(i).getName()+" "+mListStudent.get(i).getCardNum());
-				}
-				new Poplulate().execute(mItems);
+//				for (int i = 0; i < mListStudent.size(); i++) {
+////					mItems.add(mListStudent.get(i).getName()+" "+mListStudent.get(i).getCardNum());
+//				}
+				new Poplulate().execute(mListStudent);
+			}
+			
+			@Override
+			public void onFail(Context c, String errorMsg) {
+				// TODO Auto-generated method stub
+				super.onFail(c, errorMsg);
+				dialog.dismiss();
+				MyToast.showShort(c, errorMsg);
 			}
 		};
 		StudentAccess access=new StudentAccess(ManulSignInActivity.this, request);
-		access.findStudent("");
+		access.findStudent("350205200706163012");
 	}
 	
 	//签到
@@ -156,6 +165,14 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			@Override
 			public void onSuccess(HBaseObject result) {
 				
+			}
+			
+			@Override
+			public void onFail(Context c, String errorMsg) {
+				// TODO Auto-generated method stub
+				super.onFail(c, errorMsg);
+				dialog.dismiss();
+				MyToast.showShort(c, errorMsg);
 			}
 		};
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
@@ -199,7 +216,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 
 
 	// 处理数据
-	private class Poplulate extends AsyncTask<ArrayList<String>, Void, Void> {
+	private class Poplulate extends AsyncTask<ArrayList<Student>, Void, Void> {
 
 		private void showLoading(View contentView, View loadingView, View emptyView) {
 			contentView.setVisibility(View.GONE);
@@ -227,14 +244,15 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		}
 
 		@Override
-		protected Void doInBackground(ArrayList<String>... params) {
+		protected Void doInBackground(ArrayList<Student>... params) {
 			mListItems.clear();
 			mListSectionPos.clear();
-			ArrayList<String> items = params[0];
-			if (mItems.size() > 0) {
+//			ArrayList<String> items = params[0];
+			if (mListStudent.size() > 0) {
 				Collections.sort(mListStudent, new SortIgnoreCase());
 				String prev_section = "";
-				for (String current_item : items) {
+				for (Student student : mListStudent) {
+					String current_item=student.getName();
 					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
 					Matcher ms1 = p.matcher(current_item);
 					String current_section;
@@ -308,7 +326,8 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				ArrayList<String> filterItems = new ArrayList<String>();
 
 				synchronized (this) {
-					for (String item : mItems) {
+					for (Student student : mListStudent) {
+						String item=student.getName();
 						if (item.toLowerCase(Locale.getDefault()).startsWith(constraintStr)) {
 							filterItems.add(item);
 						}
@@ -318,8 +337,8 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				}
 			} else {
 				synchronized (this) {
-					result.count = mItems.size();
-					result.values = mItems;
+					result.count = mListStudent.size();
+					result.values = mListStudent;
 				}
 			}
 			return result;
@@ -328,7 +347,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
-			ArrayList<String> filtered = (ArrayList<String>) results.values;
+			ArrayList<Student> filtered = (ArrayList<Student>) results.values;
 			setIndexBarViewVisibility(constraint.toString());
 			// sort array and extract sections in background Thread
 			new Poplulate().execute(filtered);
