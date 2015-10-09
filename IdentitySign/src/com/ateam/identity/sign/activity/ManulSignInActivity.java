@@ -143,7 +143,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			}
 		};
 		StudentAccess access=new StudentAccess(ManulSignInActivity.this, request);
-		access.findStudent("350205200706163012");
+		access.findStudent("350722200906120029");
 	}
 	
 	//签到
