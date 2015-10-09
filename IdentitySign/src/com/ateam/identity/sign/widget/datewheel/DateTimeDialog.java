@@ -131,11 +131,11 @@ public class DateTimeDialog extends Dialog {
 				if(!mHasHours){
 					datetime = intYear+ fixZoer(intMonth)+ fixZoer(intDay); 
 				}else{
-					datetime = intYear + "-" + fixZoer(intMonth)
-							+ "-" + fixZoer(intDay)
+					datetime = intYear + "/" + fixZoer(intMonth)
+							+ "/" + fixZoer(intDay)
 						+ " "
 						+ fixZoer(intHour) + ":"
-						+ fixZoer(intMins);
+						+ fixZoer(intMins)+":00";
 				}
 				dateTemeChangeListener.onConfirmDatetime(datetime);
 				DateTimeDialog.this.dismiss();

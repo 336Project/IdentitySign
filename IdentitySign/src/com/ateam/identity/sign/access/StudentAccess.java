@@ -34,11 +34,4 @@ public class StudentAccess extends HBaseAccess<StudentList>{
 		execute(FIND_SUTDENT_LIST, nvps);
 	}
 	
-	//签到接口
-	public void signIn(ArrayList<Student> studentList){
-		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("studentList", JSONParse.objectToJson(studentList)));
-		execute(SIGN_IN, nvps);
-	}
-
 }

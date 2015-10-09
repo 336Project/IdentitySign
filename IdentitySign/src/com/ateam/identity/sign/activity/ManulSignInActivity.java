@@ -15,8 +15,10 @@ import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.StudentAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.HBaseObject;
+import com.ateam.identity.sign.moduel.SignObject;
 import com.ateam.identity.sign.moduel.Student;
 import com.ateam.identity.sign.moduel.StudentList;
+import com.ateam.identity.sign.util.Installation;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist.IndexBarView;
@@ -46,12 +48,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ManulSignInActivity extends HBaseActivity implements OnClickListener{
 	
-	// 显示数据
-//	static final String[] ITEMS = new String[] { "阿木","魏天武","魏天文","魏阿","East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
-//			"Eritrea", "Estonia", "Ethiopia", "Faeroe Islands", "Falkland Islands", "Fiji", "Finland", "Afghanistan",
-//			"Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
-//			"Antigua and Barbuda", "Argentina","小留","小魏","理他","周下款","李晓伟", "Armenia"};
-//	private ArrayList<String> mItems=new ArrayList<String>();// 获取的数据
 	private ArrayList<Integer> mListSectionPos;// 数据中含有的字母保存
 	private ArrayList<String> mListItems;// 要进行显示的数组
 	private PinnedHeaderListView mListView;// 显示数据的listview
@@ -62,7 +58,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private TextView mTvTime;//获取当前时间
 	private TextView mTvShowDate;
 	private ArrayList<Student> mListStudent;//获取的学员信息
-	private CustomProgressDialog dialog;
+	private ArrayList<Student> mListStudentOrder;//编排后，加上了abc之类的数据后的学员信息
+//	private CustomProgressDialog dialog;
+	private String mStudentName="";//要提交的学生的名字
+	private String mStudentCard="";//要提交的学生的身份证号
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -76,7 +75,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	}
 	
 	private void setupViews() {
-		dialog=new CustomProgressDialog(this,"学生列表获取中...");
+//		dialog=new CustomProgressDialog(this,"学生列表获取中...");
 		mTvStudentName=(TextView)findViewById(R.id.tv_studentName);
 		mTvTime=(TextView)findViewById(R.id.tv_time);
 		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
@@ -90,6 +89,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 //		mItems = new ArrayList<String>(Arrays.asList(ITEMS));
 		mListSectionPos = new ArrayList<Integer>();
 		mListItems = new ArrayList<String>();
+		mListStudentOrder=new ArrayList<Student>();
 	}
 	
 	@Override
@@ -101,6 +101,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			break;
 			
 		case R.id.btn_signin:
+			if(mStudentCard.equals("")){
+				MyToast.showShort(ManulSignInActivity.this, "您还未选择签到人员!");
+				return;
+			}
 			signin();
 			break;
 
@@ -111,7 +115,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	//获取学生信息
 	private void getStudentList(){
-		dialog.show();
+//		dialog.show();
 		HRequestCallback<StudentList> request=new HRequestCallback<StudentList>() {
 			
 			@SuppressWarnings("unchecked")
@@ -128,9 +132,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onSuccess(StudentList result) {
 				// TODO Auto-generated method stub
 				mListStudent=(ArrayList<Student>) result.studentList;
-//				for (int i = 0; i < mListStudent.size(); i++) {
-////					mItems.add(mListStudent.get(i).getName()+" "+mListStudent.get(i).getCardNum());
-//				}
 				new Poplulate().execute(mListStudent);
 			}
 			
@@ -138,18 +139,19 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				super.onFail(c, errorMsg);
-				dialog.dismiss();
+//				dialog.dismiss();
+				findViewById(R.id.btn_signin).setClickable(false);
 				MyToast.showShort(c, errorMsg);
 			}
 		};
 		StudentAccess access=new StudentAccess(ManulSignInActivity.this, request);
-		access.findStudent("350722200906120029");
+		access.findStudent("350205200306283031");
 	}
 	
 	//签到
 	private void signin(){
-		dialog=new CustomProgressDialog(this, "签到中...");
-		dialog.show();
+//		dialog=new CustomProgressDialog(this, "签到中...");
+//		dialog.show();
 		HRequestCallback<HBaseObject> request=new HRequestCallback<HBaseObject>() {
 			
 			@SuppressWarnings("unchecked")
@@ -164,19 +166,26 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			
 			@Override
 			public void onSuccess(HBaseObject result) {
-				
+				if(result.isSuccess()){
+					MyToast.showShort(ManulSignInActivity.this, "已签到");
+				}else{
+					MyToast.showShort(ManulSignInActivity.this, result.getMessage());
+				}
 			}
 			
 			@Override
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				super.onFail(c, errorMsg);
-				dialog.dismiss();
+//				dialog.dismiss();
 				MyToast.showShort(c, errorMsg);
 			}
 		};
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
-		//access.sign(signList);
+		ArrayList<SignObject> data=new ArrayList<SignObject>();
+		SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+		data.add(sign);
+		access.sign(data);
 	}
 	
 	//设置旁边滚动条，头部
@@ -208,12 +217,14 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				MyToast.showShort(ManulSignInActivity.this, ""+mListItems.get(arg2));
+				MyToast.showShort(ManulSignInActivity.this, ""+mListStudentOrder.get(arg2).getName()+"  "+
+						mListStudentOrder.get(arg2).getCardNum());
 				mTvStudentName.setText(""+mListItems.get(arg2));
+				mStudentCard=mListStudentOrder.get(arg2).getCardNum();
+				mStudentName=mListStudentOrder.get(arg2).getName();
 			}
 		});
 	}
-
 
 	// 处理数据
 	private class Poplulate extends AsyncTask<ArrayList<Student>, Void, Void> {
@@ -247,6 +258,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		protected Void doInBackground(ArrayList<Student>... params) {
 			mListItems.clear();
 			mListSectionPos.clear();
+			mListStudentOrder.clear();
 //			ArrayList<String> items = params[0];
 			if (mListStudent.size() > 0) {
 				Collections.sort(mListStudent, new SortIgnoreCase());
@@ -262,12 +274,15 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 						current_section = current_item.substring(0, 1).toUpperCase(Locale.getDefault());
 					}
 					if (!prev_section.equals(current_section)) {
+						mListStudentOrder.add(new Student());
+						mListStudentOrder.add(student);
 						mListItems.add(current_section);
 						mListItems.add(current_item);
 						// array list of section positions
 						mListSectionPos.add(mListItems.indexOf(current_section));
 						prev_section = current_section;
 					} else {
+						mListStudentOrder.add(student);
 						mListItems.add(current_item);
 					}
 				}
@@ -277,7 +292,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 
 		@Override
 		protected void onPostExecute(Void result) {
-			dialog.dismiss();
+//			dialog.dismiss();
 			if (!isCancelled()) {
 				if (mListItems.size() <= 0) {
 					showEmptyText(mListView, mLoadingView, mEmptyView);

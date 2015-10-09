@@ -203,9 +203,9 @@ public class HBaseAccess<T> implements HURL{
 	 */
 	protected String _post(String url, List<NameValuePair> nvps) throws Exception {
 		RequestConfig requestConfig=RequestConfig.custom()
-				.setConnectTimeout(10000)
-				.setSocketTimeout(10000)
-				.setConnectionRequestTimeout(10000)
+				.setConnectTimeout(20000)
+				.setSocketTimeout(20000)
+				.setConnectionRequestTimeout(20000)
 				.setStaleConnectionCheckEnabled(true)
 				.build();
 		CloseableHttpClient httpclient=HttpClients.custom()
