@@ -10,7 +10,7 @@ import java.io.RandomAccessFile;
 import java.util.UUID;
 
 public class Installation {
-    private static String sID = "";
+    private static String sID = null;
     private static final String INSTALLATION = "INSTALLATION";
     
     public static String getAppId(){

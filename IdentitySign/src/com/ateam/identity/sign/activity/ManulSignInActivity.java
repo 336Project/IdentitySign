@@ -59,7 +59,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private TextView mTvShowDate;
 	private ArrayList<Student> mListStudent;//获取的学员信息
 	private ArrayList<Student> mListStudentOrder;//编排后，加上了abc之类的数据后的学员信息
-//	private CustomProgressDialog dialog;
 	private String mStudentName="";//要提交的学生的名字
 	private String mStudentCard="";//要提交的学生的身份证号
 
@@ -70,12 +69,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		setBaseContentView(R.layout.activity_manul_sign_in);
 		setActionBarTitle("手动签到");
 		setupViews();
-//		new Poplulate().execute(mItems);
 		getStudentList();
 	}
 	
 	private void setupViews() {
-//		dialog=new CustomProgressDialog(this,"学生列表获取中...");
 		mTvStudentName=(TextView)findViewById(R.id.tv_studentName);
 		mTvTime=(TextView)findViewById(R.id.tv_time);
 		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
@@ -86,7 +83,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		mLoadingView = (ProgressBar) findViewById(R.id.loading_view);
 		mListView = (PinnedHeaderListView) findViewById(R.id.list_view);
 		mEmptyView = (TextView) findViewById(R.id.empty_view);
-//		mItems = new ArrayList<String>(Arrays.asList(ITEMS));
 		mListSectionPos = new ArrayList<Integer>();
 		mListItems = new ArrayList<String>();
 		mListStudentOrder=new ArrayList<Student>();
@@ -115,7 +111,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	//获取学生信息
 	private void getStudentList(){
-//		dialog.show();
 		HRequestCallback<StudentList> request=new HRequestCallback<StudentList>() {
 			
 			@SuppressWarnings("unchecked")
@@ -139,7 +134,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				super.onFail(c, errorMsg);
-//				dialog.dismiss();
 				findViewById(R.id.btn_signin).setClickable(false);
 				MyToast.showShort(c, errorMsg);
 			}
@@ -150,8 +144,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	//签到
 	private void signin(){
-//		dialog=new CustomProgressDialog(this, "签到中...");
-//		dialog.show();
 		HRequestCallback<HBaseObject> request=new HRequestCallback<HBaseObject>() {
 			
 			@SuppressWarnings("unchecked")
@@ -177,7 +169,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				super.onFail(c, errorMsg);
-//				dialog.dismiss();
 				MyToast.showShort(c, errorMsg);
 			}
 		};
@@ -259,7 +250,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			mListItems.clear();
 			mListSectionPos.clear();
 			mListStudentOrder.clear();
-//			ArrayList<String> items = params[0];
 			if (mListStudent.size() > 0) {
 				Collections.sort(mListStudent, new SortIgnoreCase());
 				String prev_section = "";
@@ -292,7 +282,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 
 		@Override
 		protected void onPostExecute(Void result) {
-//			dialog.dismiss();
 			if (!isCancelled()) {
 				if (mListItems.size() <= 0) {
 					showEmptyText(mListView, mLoadingView, mEmptyView);
