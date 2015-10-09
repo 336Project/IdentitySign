@@ -7,4 +7,7 @@
     <color name="color_black_light">#99000000</color>
     <color name="deepBlue">#3498DB</color>
     
+    <color name="login_normal">#E15868</color>
+    <color name="login_press">#BC0B4A</color>
+    
 </resources>

@@ -1,7 +1,84 @@
 <resources>
 
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_10">10.0sp</dimen>
+    <dimen name="text_size_11">11.0sp</dimen>
+    <dimen name="text_size_12">12.0sp</dimen>
+    <dimen name="text_size_13">13.0sp</dimen>
+    <dimen name="text_size_14">14.0sp</dimen>
+    <dimen name="text_size_15">15.0sp</dimen>
+    <dimen name="text_size_16">16.0sp</dimen>
+    <dimen name="text_size_17">17.0sp</dimen>
+    <dimen name="text_size_18">18.0sp</dimen>
+    <dimen name="text_size_19">19.0sp</dimen>
+    <dimen name="text_size_20">20.0sp</dimen>
+    <dimen name="text_size_21">21.0sp</dimen>
+    <dimen name="text_size_22">22.0sp</dimen>
+    <dimen name="text_size_23">23.0sp</dimen>
+    <dimen name="text_size_24">24.0sp</dimen>
+    <dimen name="text_size_25">25.0sp</dimen>
+    <dimen name="text_size_28">28.0sp</dimen>
+    <dimen name="text_size_30">30.0sp</dimen>
+    <dimen name="text_size_32">32.0sp</dimen>
+    <dimen name="text_size_34">34.0sp</dimen>
+    <dimen name="text_size_35">35.0sp</dimen>
+    <dimen name="text_size_40">40.0sp</dimen>
+    <dimen name="text_size_42">42.0sp</dimen>
+    <dimen name="text_size_43">43.0sp</dimen>
+    <dimen name="text_size_44">44.0sp</dimen>
+    <dimen name="text_size_78">78.0sp</dimen>
+    
+    
+    <dimen name="spacing_0.5">0.5dp</dimen>
+    <dimen name="spacing_0.8">0.8dp</dimen>
+    <dimen name="spacing_1">1dp</dimen>
+    <dimen name="spacing_2">2dp</dimen>
+    <dimen name="spacing_3">3dp</dimen>
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_5">5dp</dimen>
+    <dimen name="spacing_6">6dp</dimen>
+    <dimen name="spacing_7">7dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_9">9dp</dimen>
+    <dimen name="spacing_10">10dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_15">15dp</dimen>
+    <dimen name="spacing_17">17dp</dimen>
+    <dimen name="spacing_18">18dp</dimen>
+    <dimen name="spacing_19">19dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+    <dimen name="spacing_22">22dp</dimen>
+    <dimen name="spacing_23">23dp</dimen>
+    <dimen name="spacing_25">25dp</dimen>
+    <dimen name="spacing_30">30dp</dimen>
+    <dimen name="spacing_35">35dp</dimen>
+    <dimen name="spacing_38">38dp</dimen>
+    <dimen name="spacing_40">40dp</dimen>
+    <dimen name="spacing_44">44dp</dimen>
+    <dimen name="spacing_45">45dp</dimen>
+    <dimen name="spacing_48">48dp</dimen>
+    <dimen name="spacing_50">50dp</dimen>
+    <dimen name="spacing_60">60dp</dimen>
+    <dimen name="spacing_100">100dp</dimen>
+    <dimen name="spacing_180">180dp</dimen>
+    
+	<!--适配 -->
+	<dimen name="login_title_marginTop">105dp</dimen>
+    <dimen name="login_berlin_marginTop">238dp</dimen>
+    <dimen name="login_loginbox_marginTop">20dp</dimen>
+    <dimen name="login_loginbox_width">234dp</dimen>
+    <dimen name="login_loginbox_height">86dp</dimen>
+    <dimen name="login_loginbox_height2">43dp</dimen>
+    <dimen name="login_login_marginTop">6dp</dimen>
+    <dimen name="login_check_marginTop">-5dp</dimen>
+    <dimen name="login_check_paddingLeft">14dp</dimen>
+    <dimen name="login_check_textSize">12sp</dimen>
+    
+    
     <dimen name="index_bar_view_text_size">12sp</dimen>
     <dimen name="index_bar_view_width">20dp</dimen>
     <dimen name="index_bar_view_margin">10dp</dimen>
-
+	
 </resources>

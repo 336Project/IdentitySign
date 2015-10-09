@@ -3,10 +3,12 @@
     package="com.ateam.identity.sign"
     android:versionCode="1"
     android:versionName="1.0" >
-	<uses-sdk android:maxSdkVersion="21"
-	    android:minSdkVersion="8"
+
+    <uses-sdk
+        android:maxSdkVersion="21"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
-	
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 在SDCard中创建与删除文件权限 -->
@@ -22,7 +24,7 @@
     <!-- 解锁屏幕 -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -33,26 +35,30 @@
     </uses-permission>
 
     <application
+        android:name="com.ateam.identity.sign.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.ateam.identity.sign.MyApplication"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.ateam.identity.sign.activity.SFZActivity"
             android:label="@string/app_name" >
-            
         </activity>
         <activity android:name="com.ateam.identity.sign.BaseActivity" >
         </activity>
+        
         <activity
-            android:name="com.ateam.identity.sign.activity.ManulSignInActivity"
+            android:name="com.ateam.identity.sign.activity.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ateam.identity.sign.activity.ManulSignInActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 
