@@ -1,9 +1,7 @@
 package com.ateam.identity.sign.util;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.widget.datewheel.DateTimeDialog;
@@ -31,10 +30,8 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 public class SysUtil {
 
 	// 获取当前时间
-	@SuppressLint("SimpleDateFormat")
 	public static String getNowTime() {
-		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy/MM/dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",Locale.getDefault());
 		Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
 		String str = formatter.format(curDate);
 		return str;

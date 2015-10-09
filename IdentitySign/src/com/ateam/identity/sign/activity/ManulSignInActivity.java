@@ -1,6 +1,7 @@
 package com.ateam.identity.sign.activity;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -174,6 +175,8 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		};
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
 		ArrayList<SignObject> data=new ArrayList<SignObject>();
+		//需要时间格式化：SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//by 天舞
 		SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
 		data.add(sign);
 		access.sign(data);

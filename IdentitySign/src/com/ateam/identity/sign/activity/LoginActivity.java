@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.LoginAccess;
-import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.User;

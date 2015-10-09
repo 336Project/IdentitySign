@@ -1,7 +1,9 @@
 package com.ateam.identity.sign.access;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -27,7 +29,9 @@ public class SignAccess extends HBaseAccess<HBaseObject>{
 	 */
 	public void sign(List<SignObject> signList){
 		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("data", JSONParse.objectToJson(signList)));
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("data", signList);
+		nvps.add(new BasicNameValuePair("studentList", JSONParse.objectToJson(map)));
 		Log.e("", "nvps"+nvps.toString());
 		execute(SIGN_IN, nvps);
 	}
