@@ -7,9 +7,20 @@ public class Student implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	private int id;
+	private String teacherID;
 	private String cardNum;//学生身份证号
 	private String name;//学生名字
 	
+	
+	public String getTeacherID() {
+		return teacherID;
+	}
+
+	public void setTeacherID(String teacherID) {
+		this.teacherID = teacherID;
+	}
+
 	public String getCardNum() {
 		return cardNum;
 	}
