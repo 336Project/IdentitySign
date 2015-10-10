@@ -57,6 +57,8 @@ public class UnSignService extends Service{
 			datas = dao.query();
 			if(datas != null && !datas.isEmpty()){
 				access.sign(datas);
+			}else{
+				stopSelf();
 			}
 		}
 		return super.onStartCommand(intent, flags, startId);
