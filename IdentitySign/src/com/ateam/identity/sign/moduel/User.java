@@ -25,5 +25,4 @@ public class User extends HBaseObject{
 		this.sex = sex;
 	}
 
-
 }

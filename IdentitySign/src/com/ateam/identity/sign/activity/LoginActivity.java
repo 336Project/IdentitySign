@@ -1,19 +1,26 @@
 package com.ateam.identity.sign.activity;
 
 import java.lang.reflect.Type;
+import java.security.NoSuchAlgorithmException;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
+import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.LoginAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
+import com.ateam.identity.sign.util.SharedPreferencesUtil;
+import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
@@ -33,6 +40,10 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
 		findViewById(R.id.br_login).setOnClickListener(this);
+		
+		et_username.setText(SharedPreferencesUtil.getUsername(LoginActivity.this));
+		et_password.setText(SharedPreferencesUtil.getPassword(LoginActivity.this));
+		
 	}
 	@Override
 	public void onClick(View v) {
@@ -48,10 +59,17 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 	private void login() {
 		String username = et_username.getText().toString();
 		String password = et_password.getText().toString();
-//		if("".equals(username)){
-//			Toast.makeText(context, resId, duration);
-//			return;
-//		}
+		if("".equals(username)){
+			MyToast.showShort(LoginActivity.this, "用户名不能为空！");
+			return;
+		}
+		if("".equals(password)){
+			MyToast.showShort(LoginActivity.this, "密码不能为空！");
+			return;
+		}
+		
+		SharedPreferencesUtil.setUsername(LoginActivity.this, username);
+		SharedPreferencesUtil.setPassword(LoginActivity.this, password);
 		
 		dialog=new CustomProgressDialog(this, "登录中...");
 		dialog.show();
@@ -60,26 +78,33 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 			@Override
 			public User parseJson(String jsonStr) {
 				// TODO Auto-generated method stub
-				Type type = new com.google.gson.reflect.TypeToken<HBaseObject>() {
+				Type type = new com.google.gson.reflect.TypeToken<User>() {
 				}.getType();
 				return (User) JSONParse.jsonToObject(
 						jsonStr, type);
 			}
 			@Override
 			public void onSuccess(User result) {
-				
+				MyApplication application = (MyApplication) getApplication();
+				application.setUser(result);
+				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+				startActivity(intent);
+				dialog.dismiss();
+				finish();
 			}
 			@Override
 			public void onFail(Context c, String errorMsg) {
-				// TODO Auto-generated method stub
+				Log.e("shibai", "shibai");
 				super.onFail(c, errorMsg);
 				dialog.dismiss();
 				MyToast.showShort(c, errorMsg);
 			}
 		};
 		LoginAccess access=new LoginAccess(LoginActivity.this, request);
-		access.login(username, password);
+		try {
+			access.login(username, SysUtil.Encryption(password));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
-
-
 }
