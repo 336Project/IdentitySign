@@ -7,70 +7,92 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+         >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓名:" />
+                android:text="姓名:"
+                android:textSize="18sp"
+                 />
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView" 
+                android:textSize="18sp"
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="身份证:" />
+                android:text="身份证:" 
+                android:textSize="18sp"
+                />
 
             <TextView
                 android:id="@+id/tv_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView" 
+                android:textSize="18sp"
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="性别:" />
+                android:text="性别:" 
+                android:textSize="18sp"
+                />
 
             <TextView
                 android:id="@+id/tv_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView" 
+                android:textSize="18sp"
+                />
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerInParent="true" >
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login_selector"
             android:gravity="center"
@@ -79,9 +101,12 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login_selector"
             android:gravity="center"
@@ -90,10 +115,12 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login_selector"
             android:gravity="center"

@@ -2,6 +2,7 @@ package com.ateam.identity.sign.activity;
 
 import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import android.app.Application;
 import android.content.Context;
@@ -16,6 +17,7 @@ import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.LoginAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
+import com.ateam.identity.sign.dao.UserDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
@@ -33,6 +35,9 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_login);
+		setActionBarTitle("登陆页");
+		getLeftIcon().setVisibility(View.GONE);
+		getRightIcon().setVisibility(View.GONE);
 		initView();
 	}
 	
@@ -57,8 +62,8 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		}
 	}
 	private void login() {
-		String username = et_username.getText().toString();
-		String password = et_password.getText().toString();
+		final String username = et_username.getText().toString();
+		final String password = et_password.getText().toString();
 		if("".equals(username)){
 			MyToast.showShort(LoginActivity.this, "用户名不能为空！");
 			return;
@@ -70,6 +75,7 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		
 		SharedPreferencesUtil.setUsername(LoginActivity.this, username);
 		SharedPreferencesUtil.setPassword(LoginActivity.this, password);
+		final UserDao userDao = new UserDao(LoginActivity.this);
 		
 		dialog=new CustomProgressDialog(this, "登录中...");
 		dialog.show();
@@ -85,19 +91,40 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 			}
 			@Override
 			public void onSuccess(User result) {
+				
+				userDao.deleteByUserName(username);
+				result.setPassword(password);
+				result.setUsername(username);
+				userDao.save(result);
+				
 				MyApplication application = (MyApplication) getApplication();
 				application.setUser(result);
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 				dialog.dismiss();
-				finish();
 			}
 			@Override
 			public void onFail(Context c, String errorMsg) {
-				Log.e("shibai", "shibai");
 				super.onFail(c, errorMsg);
+				
+				Log.e("!!!", "!!!");
+				
 				dialog.dismiss();
-				MyToast.showShort(c, errorMsg);
+				if(!SysUtil.isNetworkConnected(LoginActivity.this)){
+					List<User> users = userDao.findByUserNameAndPassWord(username,password);
+					if(users.size()>0){
+						MyApplication application = (MyApplication) getApplication();
+						application.setUser(users.get(0));
+						Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+						startActivity(intent);
+					}
+					else{
+						MyToast.showShort(c, errorMsg);
+					}
+				}
+				else{
+					MyToast.showShort(c, errorMsg);
+				}
 			}
 		};
 		LoginAccess access=new LoginAccess(LoginActivity.this, request);

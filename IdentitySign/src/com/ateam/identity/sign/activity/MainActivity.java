@@ -20,6 +20,9 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_main);
+		setActionBarTitle("首页");
+		getLeftIcon().setImageResource(R.drawable.icon_back);
+		getRightIcon().setVisibility(View.GONE);
 		initView();
 	}
 
