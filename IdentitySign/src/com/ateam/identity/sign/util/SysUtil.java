@@ -2,6 +2,8 @@ package com.ateam.identity.sign.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -94,6 +96,19 @@ public class SysUtil {
 		MessageDigest md = MessageDigest.getInstance("md5");
 		byte[] buf = md.digest(str.getBytes());
 		return Base64EncoderByJINFA.encode(buf);
+	}
+	
+	/**
+	 * @return
+	 * @TODO 判断网络连接是否正常
+	 */
+	public static boolean isNetworkConnected(final Context c){
+		ConnectivityManager manager=(ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info=manager.getActiveNetworkInfo();
+		if(info!=null&&info.isAvailable()){
+			return true;
+		}
+		return false;
 	}
 	
 }

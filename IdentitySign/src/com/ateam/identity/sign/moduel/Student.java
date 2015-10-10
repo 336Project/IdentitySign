@@ -2,13 +2,19 @@ package com.ateam.identity.sign.moduel;
 
 import java.io.Serializable;
 
-//学生对象
-public class Student implements Serializable{
+import net.tsz.afinal.annotation.sqlite.Table;
+import net.tsz.afinal.annotation.sqlite.Transient;
 
+//学生对象
+@Table(name=Student.TABLE_STUDENT)
+public class Student implements Serializable{
+	@Transient
+	public static final String TABLE_STUDENT="tb_student";
+	@Transient
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String teacherID;
+	private String teacherID;//老师的身份证号
 	private String cardNum;//学生身份证号
 	private String name;//学生名字
 	
@@ -39,7 +45,8 @@ public class Student implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Student [cardNum=" + cardNum + ", name=" + name + "]";
+		return "Student [id=" + id + ", teacherID=" + teacherID + ", cardNum="
+				+ cardNum + ", name=" + name + "]";
 	}
-	
+
 }

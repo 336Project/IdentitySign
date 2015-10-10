@@ -1,12 +1,9 @@
 package com.ateam.identity.sign.activity;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,11 +12,12 @@ import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.StudentAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
+import com.ateam.identity.sign.dao.StudentDao;
+import com.ateam.identity.sign.dao.UnCommitInformDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
 import com.ateam.identity.sign.moduel.Student;
 import com.ateam.identity.sign.moduel.StudentList;
-import com.ateam.identity.sign.util.Installation;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist.IndexBarView;
@@ -27,9 +25,7 @@ import com.ateam.identity.sign.widget.phonelist.PinnedHeaderAdapter;
 import com.ateam.identity.sign.widget.phonelist.PinnedHeaderListView;
 import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
-import com.team.hbase.widget.dialog.CustomProgressDialog;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,7 +66,19 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		setBaseContentView(R.layout.activity_manul_sign_in);
 		setActionBarTitle("手动签到");
 		setupViews();
-		getStudentList();
+		//进行判断是否有网络，进行网络获取数据，或是缓存获取数据
+		if(SysUtil.isNetworkConnected(ManulSignInActivity.this)){
+			getStudentList();
+		}else{
+			StudentDao studentDao=new StudentDao(this);
+			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID("");
+			if(mListStudent!=null&&mListStudent.size()>0){
+				new Poplulate().execute(mListStudent);
+			}else{
+				MyToast.showShort(this, "暂没有学生信息");
+				findViewById(R.id.btn_signin).setClickable(false);
+			}
+		}
 	}
 	
 	private void setupViews() {
@@ -159,10 +167,11 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			
 			@Override
 			public void onSuccess(HBaseObject result) {
-				if(result.isSuccess()){
-					MyToast.showShort(ManulSignInActivity.this, "已签到");
-				}else{
-					MyToast.showShort(ManulSignInActivity.this, result.getMessage());
+				MyToast.showShort(ManulSignInActivity.this, "已签到");
+				if(!result.isSuccess()){
+					SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+					UnCommitInformDao dao=new UnCommitInformDao(ManulSignInActivity.this);
+					dao.save(sign);
 				}
 			}
 			
@@ -170,7 +179,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				super.onFail(c, errorMsg);
-				MyToast.showShort(c, errorMsg);
+				MyToast.showShort(ManulSignInActivity.this, "已签到");
+				SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+				UnCommitInformDao dao=new UnCommitInformDao(ManulSignInActivity.this);
+				dao.save(sign);
 			}
 		};
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
