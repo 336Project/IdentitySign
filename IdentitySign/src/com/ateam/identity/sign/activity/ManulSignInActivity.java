@@ -13,7 +13,7 @@ import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.StudentAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.dao.StudentDao;
-import com.ateam.identity.sign.dao.UnCommitInformDao;
+import com.ateam.identity.sign.dao.UnCommitInfoDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
 import com.ateam.identity.sign.moduel.Student;
@@ -170,7 +170,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				MyToast.showShort(ManulSignInActivity.this, "已签到");
 				if(!result.isSuccess()){
 					SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
-					UnCommitInformDao dao=new UnCommitInformDao(ManulSignInActivity.this);
+					UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
 					dao.save(sign);
 				}
 			}
@@ -178,10 +178,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			@Override
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
-				super.onFail(c, errorMsg);
+				//super.onFail(c, errorMsg);
 				MyToast.showShort(ManulSignInActivity.this, "已签到");
 				SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
-				UnCommitInformDao dao=new UnCommitInformDao(ManulSignInActivity.this);
+				UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
 				dao.save(sign);
 			}
 		};
