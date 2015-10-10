@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,6 +65,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		mTextViewSex.setText(user.getSex());
 		findViewById(R.id.btn_sign_second).setOnClickListener(this);
 		findViewById(R.id.btn_sign_third).setOnClickListener(this);
+		findViewById(R.id.btn_sign_manul).setOnClickListener(this);
 		initSign();
 	}
 
@@ -130,6 +132,9 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 			}
 			isSign = true;
 			asyncSFZ.execute(SFZ.THIRD);
+			break;
+		case R.id.btn_sign_manul:
+			startActivity(new Intent(this, ManulSignInActivity.class));
 			break;
 
 		default:
