@@ -1,8 +1,17 @@
 package com.ateam.identity.sign.moduel;
 
+import net.tsz.afinal.annotation.sqlite.Table;
+import net.tsz.afinal.annotation.sqlite.Transient;
+
 import com.ateam.identity.sign.util.Installation;
 
+
+@Table(name=SignObject.TABLE_SIGN_OBJECT)
 public class SignObject {
+	@Transient
+	public static final String TABLE_SIGN_OBJECT="tb_sign_object";
+	
+	private int id; 
 	private String idcard;
 	private String ip;
 	private String attendanceDate;//sign time
