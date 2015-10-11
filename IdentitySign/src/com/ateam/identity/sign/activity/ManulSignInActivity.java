@@ -65,6 +65,8 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_manul_sign_in);
 		setActionBarTitle("手动签到");
+		getLeftIcon().setImageResource(R.drawable.icon_back);
+		getRightIcon().setVisibility(View.GONE);
 		setupViews();
 		//进行判断是否有网络，进行网络获取数据，或是缓存获取数据
 		if(SysUtil.isNetworkConnected(ManulSignInActivity.this)){
@@ -226,6 +228,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				MyToast.showShort(ManulSignInActivity.this, ""+mListStudentOrder.get(arg2).getName()+"  "+
 						mListStudentOrder.get(arg2).getCardNum());
 				mTvStudentName.setText(""+mListItems.get(arg2));
+				mTvTime.setText(SysUtil.getNowTime());
 				mStudentCard=mListStudentOrder.get(arg2).getCardNum();
 				mStudentName=mListStudentOrder.get(arg2).getName();
 			}

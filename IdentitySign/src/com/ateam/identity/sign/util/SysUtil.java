@@ -92,10 +92,16 @@ public class SysUtil {
 	}
 	
 	//密码加密
-	public static String Encryption(String str) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("md5");
-		byte[] buf = md.digest(str.getBytes());
-		return Base64EncoderByJINFA.encode(buf);
+	public static String Encryption(String str){
+		try {
+			MessageDigest md;
+			md = MessageDigest.getInstance("md5");
+			byte[] buf = md.digest(str.getBytes());
+			return Base64EncoderByJINFA.encode(buf);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 	
 	/**

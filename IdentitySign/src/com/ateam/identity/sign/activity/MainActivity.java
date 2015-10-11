@@ -28,6 +28,7 @@ import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.activity.HBaseActivity;
+import com.team.hbase.utils.AppManager;
 import com.team.hbase.utils.JSONParse;
 
 public class MainActivity extends HBaseActivity implements OnClickListener {
@@ -111,7 +112,6 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				isSign = false;
 			}
 		};
-		asyncSFZ = new AsyncParseSFZ(this,onReadSFZListener);
 	}
 
 	@Override
@@ -123,6 +123,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				return;
 			}
 			isSign = true;
+			asyncSFZ = new AsyncParseSFZ(this,onReadSFZListener);
 			asyncSFZ.execute(SFZ.SECOND);
 			break;
 		case R.id.btn_sign_third:
@@ -131,6 +132,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				return;
 			}
 			isSign = true;
+			asyncSFZ = new AsyncParseSFZ(this,onReadSFZListener);
 			asyncSFZ.execute(SFZ.THIRD);
 			break;
 		case R.id.btn_sign_manul:
@@ -182,6 +184,17 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		mediaPlayer.release();
 		mediaPlayer = null;
 		SerialPortManager.getInstance().closeSerialPort();
+	}
+	
+	private long currTime = 0;
+	@Override
+	public void onBackPressed() {
+		if(System.currentTimeMillis()-currTime>2000){
+			currTime = System.currentTimeMillis();
+			MyToast.showShort(this, "再按一次退出程序");
+		}else{
+			AppManager.getInstance().ExitApp();
+		}
 	}
 
 }

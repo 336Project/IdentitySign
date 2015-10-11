@@ -1,6 +1,7 @@
 package com.ateam.identity.sign.service;
 
-import com.team.hbase.utils.SysUtil;
+
+import com.ateam.identity.sign.util.SysUtil;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
