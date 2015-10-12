@@ -274,18 +274,10 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			mListItems.clear();
 			mListSectionPos.clear();
 			mListStudentOrder.clear();
-			//判断有没有网络，才进行学生的数据的删除，添加
-			if(ifHaveNet&&studentDao.findTeacher(mAPP.getUser().getCardNum())){
-				studentDao.deleteByIDCard(mAPP.getUser().getCardNum());
-			}
 			if (mListStudent.size() > 0) {
 				Collections.sort(mListStudent, new SortIgnoreCase());
 				String prev_section = "";
 				for (Student student : mListStudent) {
-					if(ifHaveNet){
-						student.setTeacherID(mAPP.getUser().getCardNum());
-						studentDao.save(student);
-					}
 					String current_item=student.getName();
 					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
 					Matcher ms1 = p.matcher(current_item);
@@ -322,6 +314,23 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 					showContent(mListView, mLoadingView, mEmptyView);
 				}
 			}
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					//判断有没有网络，才进行学生的数据的删除，添加
+					if(ifHaveNet&&studentDao.findTeacher(mAPP.getUser().getCardNum())){
+						studentDao.deleteByIDCard(mAPP.getUser().getCardNum());
+					}
+					for (Student student : mListStudent) {
+						if(ifHaveNet){
+							student.setTeacherID(mAPP.getUser().getCardNum());
+							studentDao.save(student);
+						}
+					}
+				}
+			}).start();
 			super.onPostExecute(result);
 		}
 	}
