@@ -77,7 +77,6 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		if(ifHaveNet){
 			getStudentList();
 		}else{
-			studentDao=new StudentDao(this);
 			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum());
 			if(mListStudent!=null&&mListStudent.size()>0){
 				new Poplulate().execute(mListStudent);
@@ -90,6 +89,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	private void setupViews() {
 		mAPP=(MyApplication) getApplication();
+		studentDao=new StudentDao(this);
 		mTvStudentName=(TextView)findViewById(R.id.tv_studentName);
 		mTvTime=(TextView)findViewById(R.id.tv_time);
 		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
