@@ -64,6 +64,7 @@ public class UnSignService extends Service{
 			isDoing = true;
 			datas = dao.query();
 			if(datas != null && !datas.isEmpty()){
+				Log.e(TAG, "有签到缓存记录:"+datas.size());
 				access.sign(datas);
 			}else{
 				Log.e(TAG, "没有签到缓存记录");

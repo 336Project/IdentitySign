@@ -49,4 +49,12 @@ public class Student implements Serializable{
 				+ cardNum + ", name=" + name + "]";
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }
