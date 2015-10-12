@@ -64,6 +64,12 @@
             android:name="com.ateam.identity.sign.activity.MainActivity"
             android:label="@string/app_name" >
         </activity>
+        <service android:name="com.ateam.identity.sign.service.UnSignService"></service>
+        <receiver android:name="com.ateam.identity.sign.service.NetworkBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

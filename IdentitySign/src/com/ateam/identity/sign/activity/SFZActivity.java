@@ -31,7 +31,7 @@ import android_serialport_api.ParseSFZAPI.People;
 import android_serialport_api.AsyncParseSFZ;
 import android_serialport_api.SerialPortManager;
 
-
+@Deprecated
 public class SFZActivity extends Activity implements OnClickListener {
 	private TextView sfz_name;
 	private TextView sfz_sex;

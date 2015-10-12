@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ateam.identity.sign.util.MyToast;
+import com.team.hbase.widget.dialog.CustomProgressDialog;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android_serialport_api.ParseSFZAPI.People;
@@ -16,7 +16,7 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 	private static final String CODE = "code";
 	private ParseSFZAPI parseAPI;
 	
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	private Context mContext;
 	private OnReadSFZListener onReadSFZListener;
 	public AsyncParseSFZ(Context context,OnReadSFZListener onReadSFZListener) {
@@ -65,22 +65,26 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 					onReadSFZListener.onReadSuccess((People)result.get(DATA));
 					break;
 				case Result.FIND_FAIL:
-					MyToast.showShort(mContext, "读卡失败。");
+					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					//MyToast.showShort(mContext, "读卡失败。");
 					onReadSFZListener.onReadFail(status);
 					break;
 				case Result.TIME_OUT:
+					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
 					onReadSFZListener.onReadFail(status);
-					MyToast.showShort(mContext, "读卡超时。");
+					//MyToast.showShort(mContext, "读卡超时，请重试。");
 					break;
 				case Result.OTHER_EXCEPTION:
+					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
 					onReadSFZListener.onReadFail(status);
-					MyToast.showShort(mContext, "读卡时发生异常。");
+					//MyToast.showShort(mContext, "读卡时发生异常。");
 					break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
 			onReadSFZListener.onReadFail(Result.OTHER_EXCEPTION);
-			MyToast.showShort(mContext, "抱歉，发生异常。");
+			//MyToast.showShort(mContext, "抱歉，发生异常。");
 		}
 		
 	}
@@ -91,8 +95,7 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 	 * @TODO 
 	 */
 	private void showProgressDialog(String message) {
-		progressDialog = new ProgressDialog(mContext);
-		progressDialog.setMessage(message);
+		progressDialog = new CustomProgressDialog(mContext,message);
 		if (!progressDialog.isShowing()) {
 			progressDialog.show();
 		}

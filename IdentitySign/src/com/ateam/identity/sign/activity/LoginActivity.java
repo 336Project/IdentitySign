@@ -1,10 +1,8 @@
 package com.ateam.identity.sign.activity;
 
 import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,17 +16,14 @@ import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.LoginAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.dao.UserDao;
-import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SharedPreferencesUtil;
 import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
-import com.team.hbase.widget.dialog.CustomProgressDialog;
 
 public class LoginActivity extends HBaseActivity implements OnClickListener{
-	private CustomProgressDialog dialog;
 	private EditText et_username;
 	private EditText et_password;
 	@Override
@@ -77,13 +72,9 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		SharedPreferencesUtil.setPassword(LoginActivity.this, password);
 		final UserDao userDao = new UserDao(LoginActivity.this);
 		
-		dialog=new CustomProgressDialog(this, "登录中...");
-		dialog.show();
 		HRequestCallback<User> request=new HRequestCallback<User>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public User parseJson(String jsonStr) {
-				// TODO Auto-generated method stub
 				Type type = new com.google.gson.reflect.TypeToken<User>() {
 				}.getType();
 				return (User) JSONParse.jsonToObject(
@@ -91,32 +82,37 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 			}
 			@Override
 			public void onSuccess(User result) {
-				
-				userDao.deleteByUserName(username);
-				result.setPassword(password);
-				result.setUsername(username);
-				userDao.save(result);
-				
-				MyApplication application = (MyApplication) getApplication();
-				application.setUser(result);
-				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-				startActivity(intent);
-				dialog.dismiss();
+				if(result.isSuccess()){
+					Log.e("LoginActivity", "在线模式");
+					MyToast.showShort(LoginActivity.this, "登录成功");
+					userDao.deleteByUserName(username);
+					result.setPassword(password);
+					result.setUsername(username);
+					userDao.save(result);
+					
+					MyApplication application = (MyApplication) getApplication();
+					application.setUser(result);
+					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+					startActivity(intent);
+					finish();
+				}else{
+					MyToast.showShort(LoginActivity.this, result.getMessage());
+				}
 			}
 			@Override
 			public void onFail(Context c, String errorMsg) {
-				super.onFail(c, errorMsg);
-				
 				Log.e("!!!", "!!!");
 				
-				dialog.dismiss();
 				if(!SysUtil.isNetworkConnected(LoginActivity.this)){
 					List<User> users = userDao.findByUserNameAndPassWord(username,password);
 					if(users.size()>0){
+						Log.e("LoginActivity", "离线模式");
+						MyToast.showShort(LoginActivity.this, "登录成功");
 						MyApplication application = (MyApplication) getApplication();
 						application.setUser(users.get(0));
 						Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 						startActivity(intent);
+						finish();
 					}
 					else{
 						MyToast.showShort(c, errorMsg);
@@ -128,10 +124,6 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 			}
 		};
 		LoginAccess access=new LoginAccess(LoginActivity.this, request);
-		try {
-			access.login(username, SysUtil.Encryption(password));
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		access.login(username, SysUtil.Encryption(password));
 	}
 }
