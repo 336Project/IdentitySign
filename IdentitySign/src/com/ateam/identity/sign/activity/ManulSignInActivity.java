@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.SignAccess;
 import com.ateam.identity.sign.access.StudentAccess;
@@ -58,6 +59,9 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private ArrayList<Student> mListStudentOrder;//编排后，加上了abc之类的数据后的学员信息
 	private String mStudentName="";//要提交的学生的名字
 	private String mStudentCard="";//要提交的学生的身份证号
+	private MyApplication mAPP;
+	private StudentDao studentDao;
+	private Boolean ifHaveNet;//判断是否有网络
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -67,11 +71,12 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		setActionBarTitle("手动签到");
 		setupViews();
 		//进行判断是否有网络，进行网络获取数据，或是缓存获取数据
-		if(SysUtil.isNetworkConnected(ManulSignInActivity.this)){
+		ifHaveNet=SysUtil.isNetworkConnected(ManulSignInActivity.this);
+		if(ifHaveNet){
 			getStudentList();
 		}else{
-			StudentDao studentDao=new StudentDao(this);
-			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID("");
+			studentDao=new StudentDao(this);
+			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum());
 			if(mListStudent!=null&&mListStudent.size()>0){
 				new Poplulate().execute(mListStudent);
 			}else{
@@ -82,6 +87,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	}
 	
 	private void setupViews() {
+		mAPP=(MyApplication) getApplication();
 		mTvStudentName=(TextView)findViewById(R.id.tv_studentName);
 		mTvTime=(TextView)findViewById(R.id.tv_time);
 		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
@@ -265,10 +271,18 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			mListItems.clear();
 			mListSectionPos.clear();
 			mListStudentOrder.clear();
+			//判断有没有网络，才进行学生的数据的删除，添加
+			if(ifHaveNet&&studentDao.findTeacher(mAPP.getUser().getCardNum())){
+				studentDao.deleteByIDCard(mAPP.getUser().getCardNum());
+			}
 			if (mListStudent.size() > 0) {
 				Collections.sort(mListStudent, new SortIgnoreCase());
 				String prev_section = "";
 				for (Student student : mListStudent) {
+					if(ifHaveNet){
+						student.setTeacherID(mAPP.getUser().getCardNum());
+						studentDao.save(student);
+					}
 					String current_item=student.getName();
 					Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
 					Matcher ms1 = p.matcher(current_item);

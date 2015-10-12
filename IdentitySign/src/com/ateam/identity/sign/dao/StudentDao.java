@@ -31,8 +31,17 @@ public class StudentDao extends HBaseDao {
 		return mDb.findAllByWhere(Student.class, "teacherID = '"+teacherID+"'");
 	}
 	
+	//根据老师的身份证查找学生信息
+	public boolean findTeacher(String teacherID){
+		if(mDb.findAllByWhere(Student.class, "teacherID = '"+teacherID+"'").size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	//根据老师的身份证删除学生信息
-	public void deleteByIDCard(int teacherID){
+	public void deleteByIDCard(String teacherID){
 		mDb.deleteByWhere(Student.class, "teacherID = '"+teacherID+"'");
 	}
 	
