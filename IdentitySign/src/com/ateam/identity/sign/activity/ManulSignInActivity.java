@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,6 +53,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private StudentDao studentDao;
 	private TextView mTvTime;//获取当前时间
 	private TextView mTvShowDate;//点击后显示日历对话框
+	private ArrayList<Student> mCommitStudent;//要提交的学生的信息
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private void initViews() {
 		mAPP=(MyApplication) getApplication();
 		studentDao=new StudentDao(this);
+		mCommitStudent=new ArrayList<Student>();
 		mTvTime=(TextView)findViewById(R.id.tv_time);
 		mTvShowDate=(TextView)findViewById(R.id.tv_showDate);
 		mTvShowDate.setOnClickListener(this);
@@ -95,8 +98,16 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// 这里要利用adapter.getItem(position)来获取当前position所对应的对象
+				ImageView mivSelect = (ImageView)view.findViewById(R.id.iv_select);
+				if(mivSelect.getVisibility()==View.GONE){
+					mCommitStudent.add(mListStudent.get(position));
+					mivSelect.setVisibility(View.VISIBLE);
+				}else{
+					mCommitStudent.remove(mListStudent.get(position));
+					mivSelect.setVisibility(View.GONE);
+				}
 				MyToast.showShort(ManulSignInActivity.this,((SortModel) adapter.getItem(position)).getName());
-				finish();
+//				finish();
 			}
 		});
 		initData();
@@ -104,7 +115,21 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	//获取数据
 	private void initData(){
-		mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum());
+//		mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum(),mAPP.getUser().getClassroom());
+		//测试数据
+		mListStudent=new ArrayList<Student>();
+		for (int i = 0; i < 10; i++) {
+			Student student=new Student();
+			student.setCardNum("1021252455214"+i);
+			if(i==0){
+				student.setName("xiaoli"+i);
+			}else if(i==1){
+				student.setName("biaoli"+i);
+			}else{
+				student.setName("miaoli"+i);
+			}
+			mListStudent.add(student);
+		}
 		if(mListStudent!=null&&mListStudent.size()>0){
 			SourceDateList = filledData(mListStudent);
 
@@ -202,7 +227,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			break;
 			
 		case R.id.btn_signin:
-			if(adapter.getSelectItem().size()==0){
+			if(mCommitStudent.size()==0){
 				MyToast.showShort(ManulSignInActivity.this, "您还未选择签到人员!");
 				return;
 			}
