@@ -54,7 +54,6 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	private SignObject signObject;
 	private boolean isSign = false;//是否正在签到
 	
-	private String currClass; //当前所在班级
 	
 	private ImageView rightIcon;
 	
@@ -121,11 +120,11 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 			textView.setText(split[0]);
 			textView.setTextSize(18);
 			mLinearLayoutClass.addView(textView);
-			currClass = split[0];
+			currClassroom = split[0];
 		}
 		else{
 			RadioGroup radioGroup = new RadioGroup(MainActivity.this, null);
-			currClass = split[0];
+			currClassroom = split[0];
 			for (int i = 0; i < split.length; i++) {
 				RadioButton radioButton = new RadioButton(MainActivity.this);
 				final String nowClass =split[i];
@@ -135,7 +134,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(isChecked){
-							currClass =nowClass;
+							currClassroom =nowClass;
 						}
 					}
 				});
