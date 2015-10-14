@@ -69,16 +69,16 @@
     <dimen name="login_berlin_marginTop">238dp</dimen>
     <dimen name="login_loginbox_marginTop">20dp</dimen>
     <dimen name="login_loginbox_width">468dp</dimen>
-    <dimen name="login_loginbox_height">172dp</dimen>
+    <dimen name="login_loginbox_height">200dp</dimen>
     <dimen name="login_loginbox_height2">86dp</dimen>
     <dimen name="login_login_marginTop">6dp</dimen>
     <dimen name="login_check_marginTop">-5dp</dimen>
     <dimen name="login_check_paddingLeft">14dp</dimen>
-    <dimen name="login_check_textSize">12sp</dimen>
+    <dimen name="login_check_textSize">18sp</dimen>
     
     
     <dimen name="index_bar_view_text_size">12sp</dimen>
     <dimen name="index_bar_view_width">20dp</dimen>
     <dimen name="index_bar_view_margin">10dp</dimen>
-	
+	<dimen name="text_size">25sp</dimen>
 </resources>

@@ -30,7 +30,7 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_login);
-		setActionBarTitle("登陆页");
+		setActionBarTitle("登录页");
 		getLeftIcon().setVisibility(View.GONE);
 		getRightIcon().setVisibility(View.GONE);
 		initView();

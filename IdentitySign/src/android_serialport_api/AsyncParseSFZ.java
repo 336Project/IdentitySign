@@ -65,26 +65,33 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 					onReadSFZListener.onReadSuccess((People)result.get(DATA));
 					break;
 				case Result.FIND_FAIL:
-					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					if(isShowDialog){
+						MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					}
 					//MyToast.showShort(mContext, "读卡失败。");
 					onReadSFZListener.onReadFail(status);
 					break;
 				case Result.TIME_OUT:
-					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					if(isShowDialog){
+						MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					}
 					onReadSFZListener.onReadFail(status);
 					//MyToast.showShort(mContext, "读卡超时，请重试。");
 					break;
 				case Result.OTHER_EXCEPTION:
-					MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					if(isShowDialog){
+						MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+					}
 					onReadSFZListener.onReadFail(status);
 					//MyToast.showShort(mContext, "读卡时发生异常。");
 					break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+			if(isShowDialog){
+				MyToast.showShort(mContext, "读卡失败，请换另外一种签到方式试试");
+			}
 			onReadSFZListener.onReadFail(Result.OTHER_EXCEPTION);
-			//MyToast.showShort(mContext, "抱歉，发生异常。");
 		}
 		
 	}

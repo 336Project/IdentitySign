@@ -1,6 +1,7 @@
 package com.ateam.identity.sign.moduel;
 
 import java.io.Serializable;
+import com.ateam.identity.sign.util.SysUtil;
 
 import net.tsz.afinal.annotation.sqlite.Table;
 import net.tsz.afinal.annotation.sqlite.Transient;
@@ -20,11 +21,11 @@ public class Student implements Serializable{
 	private String classroom;//所在班级
 	private String sex;//性别
 	
-	public String gettCardNum() {
+	public String getTCardNum() {
 		return tCardNum;
 	}
 
-	public void settCardNum(String tCardNum) {
+	public void setTCardNum(String tCardNum) {
 		this.tCardNum = tCardNum;
 	}
 
@@ -33,7 +34,7 @@ public class Student implements Serializable{
 	}
 
 	public void setClassroom(String classroom) {
-		this.classroom = classroom;
+		this.classroom = SysUtil.formate(classroom);
 	}
 
 	public String getSex() {
@@ -57,7 +58,7 @@ public class Student implements Serializable{
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = SysUtil.formate(name);
 	}
 
 	public int getId() {
