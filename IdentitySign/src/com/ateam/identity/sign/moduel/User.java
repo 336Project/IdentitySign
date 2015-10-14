@@ -26,6 +26,7 @@ public class User implements Serializable{
 	private String password; //密码
 	private String cardNum; //身份证
 	private String sex; //性别
+	private String classroom; //班级
 	
 	public String getName() {
 		return name;
@@ -74,5 +75,11 @@ public class User implements Serializable{
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public String getClassroom() {
+		return classroom;
+	}
+	public void setClassroom(String classroom) {
+		this.classroom = classroom;
 	}
 }

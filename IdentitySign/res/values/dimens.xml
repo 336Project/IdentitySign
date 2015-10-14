@@ -68,9 +68,9 @@
 	<dimen name="login_title_marginTop">105dp</dimen>
     <dimen name="login_berlin_marginTop">238dp</dimen>
     <dimen name="login_loginbox_marginTop">20dp</dimen>
-    <dimen name="login_loginbox_width">234dp</dimen>
-    <dimen name="login_loginbox_height">86dp</dimen>
-    <dimen name="login_loginbox_height2">43dp</dimen>
+    <dimen name="login_loginbox_width">468dp</dimen>
+    <dimen name="login_loginbox_height">172dp</dimen>
+    <dimen name="login_loginbox_height2">86dp</dimen>
     <dimen name="login_login_marginTop">6dp</dimen>
     <dimen name="login_check_marginTop">-5dp</dimen>
     <dimen name="login_check_paddingLeft">14dp</dimen>

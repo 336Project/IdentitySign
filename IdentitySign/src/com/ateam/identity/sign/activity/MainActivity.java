@@ -8,8 +8,12 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android_serialport_api.AsyncParseSFZ;
 import android_serialport_api.AsyncParseSFZ.SFZ;
@@ -48,7 +52,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		setBaseContentView(R.layout.activity_main);
 		setActionBarTitle("首页");
 		getLeftIcon().setImageResource(R.drawable.icon_back);
-		getRightIcon().setVisibility(View.GONE);
+		getRightIcon().setImageResource(R.drawable.icon_right);
 		initView();
 	}
 
@@ -60,16 +64,41 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		mTextViewName = (TextView) findViewById(R.id.tv_name);
 		mTextViewCard = (TextView) findViewById(R.id.tv_card);
 		mTextViewSex = (TextView) findViewById(R.id.tv_sex);
+		mLinearLayoutClass = (LinearLayout) findViewById(R.id.linearLayout_class); //班级
 		
 		mTextViewName.setText(user.getName());
 		mTextViewCard.setText(user.getCardNum());
 		mTextViewSex.setText(user.getSex());
+		String classroom = user.getClassroom();
+		String[] split = classroom.split(",");
+		if(split.length==0){
+			mLinearLayoutClass.setVisibility(View.GONE);
+		}
+		else if(split.length==1){
+			TextView textView = new TextView(this);
+			textView.setText(split[0]);
+			textView.setTextSize(18);
+			mLinearLayoutClass.addView(textView);
+		}
+		else{
+			RadioGroup radioGroup = new RadioGroup(MainActivity.this, null);
+			for (int i = 0; i < split.length; i++) {
+				RadioButton radioButton = new RadioButton(MainActivity.this);
+				radioButton.setText(split[i]);
+				radioButton.setTextSize(18);
+				radioGroup.addView(radioButton);
+			}
+			mLinearLayoutClass.addView(radioGroup);
+		}
+		
 		findViewById(R.id.btn_sign_second).setOnClickListener(this);
 		findViewById(R.id.btn_sign_third).setOnClickListener(this);
 		findViewById(R.id.btn_sign_manul).setOnClickListener(this);
 		initSign();
 	}
-
+	public float px2sp(Context context, float pxVal) {
+		return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
+	}
 	private void initSign() {
 		mediaPlayer = MediaPlayer.create(this, R.raw.ok);
 		mAccess = new SignAccess(this, new HRequestCallback<HBaseObject>() {
@@ -187,6 +216,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	}
 	
 	private long currTime = 0;
+	private LinearLayout mLinearLayoutClass;
 	@Override
 	public void onBackPressed() {
 		if(System.currentTimeMillis()-currTime>2000){
