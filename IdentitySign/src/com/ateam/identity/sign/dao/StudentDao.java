@@ -27,8 +27,8 @@ public class StudentDao extends HBaseDao {
 	}
 	
 	//根据老师的身份证查找学生信息
-	public List<Student> findByTeacherID(String teacherID){
-		return mDb.findAllByWhere(Student.class, "teacherID = '"+teacherID+"'");
+	public List<Student> findByTeacherID(String teacherID,String classroom){
+		return mDb.findAllByWhere(Student.class, "teacherID = '"+teacherID+"'"+"and classroom = '"+classroom+"'");
 	}
 	
 	//根据老师的身份证查找学生信息

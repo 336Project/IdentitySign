@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class SortAdapter extends BaseAdapter implements SectionIndexer{
 	private List<SortModel> list = null;
-	private ArrayList<Integer> selectStudent=new ArrayList<Integer>();
+//	private ArrayList<Integer> selectStudent=new ArrayList<Integer>();
 	private Context mContext;
 	
 	public SortAdapter(Context mContext, List<SortModel> list) {
@@ -70,15 +70,15 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 		}else{
 			viewHolder.tvLetter.setVisibility(View.GONE);
 		}
-		if(list.get(position).getIfSelect()){
-			viewHolder.ivSelect.setVisibility(View.GONE);
-			list.get(position).setIfSelect(false);
-			selectStudent.remove((Integer)position);
-		}else{
-			viewHolder.ivSelect.setVisibility(View.VISIBLE);
-			list.get(position).setIfSelect(true);
-			selectStudent.add((Integer)position);
-		}
+//		if(!list.get(position).getIfSelect()){
+//			viewHolder.ivSelect.setVisibility(View.GONE);
+//			list.get(position).setIfSelect(false);
+//			selectStudent.remove((Integer)position);
+//		}else{
+//			viewHolder.ivSelect.setVisibility(View.VISIBLE);
+//			list.get(position).setIfSelect(true);
+//			selectStudent.add((Integer)position);
+//		}
 	
 		viewHolder.tvTitle.setText(this.list.get(position).getName());
 		
@@ -86,9 +86,9 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 
 	}
 	
-	public ArrayList<Integer> getSelectItem(){
-		return selectStudent;
-	}
+//	public ArrayList<Integer> getSelectItem(){
+//		return selectStudent;
+//	}
 
 	final static class ViewHolder {
 		TextView tvLetter;

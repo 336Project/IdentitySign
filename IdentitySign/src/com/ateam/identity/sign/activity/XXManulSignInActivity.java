@@ -75,7 +75,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 		if(ifHaveNet){
 			getStudentList();
 		}else{
-			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum());
+			mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum(),mAPP.getUser().getClassroom());
 			if(mListStudent!=null&&mListStudent.size()>0){
 				new Poplulate().execute(mListStudent);
 			}else{
