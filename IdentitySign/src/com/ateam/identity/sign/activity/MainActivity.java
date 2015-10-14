@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -46,6 +48,8 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	private SignAccess mAccess;
 	private SignObject signObject;
 	private boolean isSign = false;//是否正在签到
+	
+	private String currClass; //当前所在班级
 	
 	private ImageView rightIcon;
 	@Override
@@ -100,13 +104,24 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 			textView.setText(split[0]);
 			textView.setTextSize(18);
 			mLinearLayoutClass.addView(textView);
+			currClass = split[0];
 		}
 		else{
 			RadioGroup radioGroup = new RadioGroup(MainActivity.this, null);
+			currClass = split[0];
 			for (int i = 0; i < split.length; i++) {
 				RadioButton radioButton = new RadioButton(MainActivity.this);
+				final String nowClass =split[i];
 				radioButton.setText(split[i]);
 				radioButton.setTextSize(18);
+				radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							currClass =nowClass;
+						}
+					}
+				});
 				radioGroup.addView(radioButton);
 			}
 			mLinearLayoutClass.addView(radioGroup);
