@@ -74,6 +74,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="com.ateam.identity.sign.service.BootBroadcastReceiver">  
+            <intent-filter>  
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>  
+            </intent-filter>  
+        </receiver>  
     </application>
 
 </manifest>
