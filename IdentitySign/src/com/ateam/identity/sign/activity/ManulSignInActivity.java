@@ -59,6 +59,9 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.reciving_adress);
+		setActionBarTitle("手动签到");
+		getLeftIcon().setImageResource(R.drawable.icon_back);
+		getRightIcon().setVisibility(View.GONE);
 		initViews();
 	}
 
@@ -102,12 +105,13 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				if(mivSelect.getVisibility()==View.GONE){
 					mCommitStudent.add(mListStudent.get(position));
 					mivSelect.setVisibility(View.VISIBLE);
+					adapter.setItemSelect(position, true);
 				}else{
 					mCommitStudent.remove(mListStudent.get(position));
 					mivSelect.setVisibility(View.GONE);
+					adapter.setItemSelect(position, false);
 				}
 				MyToast.showShort(ManulSignInActivity.this,((SortModel) adapter.getItem(position)).getName());
-//				finish();
 			}
 		});
 		initData();
@@ -186,15 +190,13 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			
 			@Override
 			public void onSuccess(HBaseObject result) {
-				MyToast.showShort(ManulSignInActivity.this, "已签到");
+				MyToast.showShort(ManulSignInActivity.this, result.getMessage());
 				if(!result.isSuccess()){
-//					ArrayList<Integer> 
-//					for (int i = 0; i < array.length; i++) {
-//						
-//					}
-//					SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
-//					UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
-//					dao.save(sign);
+					for (int i = 0; i < mCommitStudent.size(); i++) {
+						SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+						UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
+						dao.save(sign);
+					}
 				}
 			}
 			
@@ -202,19 +204,23 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			public void onFail(Context c, String errorMsg) {
 				// TODO Auto-generated method stub
 				//super.onFail(c, errorMsg);
-				MyToast.showShort(ManulSignInActivity.this, "已签到");
-//				SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
-//				UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
-//				dao.save(sign);
+				MyToast.showShort(ManulSignInActivity.this, "签到成功");
+				for (int i = 0; i < mCommitStudent.size(); i++) {
+					SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+					UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
+					dao.save(sign);
+				}
 			}
 		};
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
 		ArrayList<SignObject> data=new ArrayList<SignObject>();
+		for (int i = 0; i < mCommitStudent.size(); i++) {
+			SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+			data.add(sign);
+		}
 		//需要时间格式化：SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		//by 天舞
-//		SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
-//		data.add(sign);
-//		access.sign(data);
+		access.sign(data);
 	}
 		
 

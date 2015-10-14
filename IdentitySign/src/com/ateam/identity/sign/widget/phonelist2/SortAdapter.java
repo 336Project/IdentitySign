@@ -70,15 +70,11 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 		}else{
 			viewHolder.tvLetter.setVisibility(View.GONE);
 		}
-//		if(!list.get(position).getIfSelect()){
-//			viewHolder.ivSelect.setVisibility(View.GONE);
-//			list.get(position).setIfSelect(false);
-//			selectStudent.remove((Integer)position);
-//		}else{
-//			viewHolder.ivSelect.setVisibility(View.VISIBLE);
-//			list.get(position).setIfSelect(true);
-//			selectStudent.add((Integer)position);
-//		}
+		if(!list.get(position).getIfSelect()){
+			viewHolder.ivSelect.setVisibility(View.GONE);
+		}else{
+			viewHolder.ivSelect.setVisibility(View.VISIBLE);
+		}
 	
 		viewHolder.tvTitle.setText(this.list.get(position).getName());
 		
@@ -89,6 +85,15 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 //	public ArrayList<Integer> getSelectItem(){
 //		return selectStudent;
 //	}
+	
+	//设置被点击的item的 数据中的状态为被选择状态
+	public void setItemSelect(int position,Boolean isSelect){
+		if(isSelect){
+			list.get(position).setIfSelect(true);
+		}else{
+			list.get(position).setIfSelect(false);
+		}
+	}
 
 	final static class ViewHolder {
 		TextView tvLetter;
