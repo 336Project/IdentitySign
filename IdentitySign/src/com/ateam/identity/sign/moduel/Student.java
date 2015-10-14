@@ -14,17 +14,34 @@ public class Student implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String teacherID;//老师的身份证号
+	private String tCardNum;//老师的身份证号
 	private String cardNum;//学生身份证号
 	private String name;//学生名字
+	private String classroom;//所在班级
+	private String sex;//性别
 	
-	
-	public String getTeacherID() {
-		return teacherID;
+	public String gettCardNum() {
+		return tCardNum;
 	}
 
-	public void setTeacherID(String teacherID) {
-		this.teacherID = teacherID;
+	public void settCardNum(String tCardNum) {
+		this.tCardNum = tCardNum;
+	}
+
+	public String getClassroom() {
+		return classroom;
+	}
+
+	public void setClassroom(String classroom) {
+		this.classroom = classroom;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 	public String getCardNum() {
@@ -43,12 +60,6 @@ public class Student implements Serializable{
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", teacherID=" + teacherID + ", cardNum="
-				+ cardNum + ", name=" + name + "]";
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -57,4 +68,11 @@ public class Student implements Serializable{
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", tCardNum=" + tCardNum + ", cardNum="
+				+ cardNum + ", name=" + name + ", classroom=" + classroom
+				+ ", sex=" + sex + "]";
+	}
+	
 }
