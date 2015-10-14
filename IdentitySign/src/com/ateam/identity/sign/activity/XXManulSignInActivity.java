@@ -11,14 +11,12 @@ import java.util.regex.Pattern;
 import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.SignAccess;
-import com.ateam.identity.sign.access.StudentAccess;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.dao.StudentDao;
 import com.ateam.identity.sign.dao.UnCommitInfoDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
 import com.ateam.identity.sign.moduel.Student;
-import com.ateam.identity.sign.moduel.StudentList;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist.IndexBarView;
@@ -128,7 +126,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 	
 	//获取学生信息
 	private void getStudentList(){
-		HRequestCallback<StudentList> request=new HRequestCallback<StudentList>() {
+		/*HRequestCallback<StudentList> request=new HRequestCallback<StudentList>() {
 			
 			@SuppressWarnings("unchecked")
 			@Override
@@ -156,7 +154,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 			}
 		};
 		StudentAccess access=new StudentAccess(XXManulSignInActivity.this, request);
-		access.findStudent("350205200306283031");
+		access.findStudent("350205200306283031");*/
 	}
 	
 	//签到

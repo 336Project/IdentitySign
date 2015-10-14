@@ -56,6 +56,7 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 			break;
 		}
 	}
+	private UserDao userDao;
 	private void login() {
 		final String username = et_username.getText().toString();
 		final String password = et_password.getText().toString();
@@ -70,8 +71,18 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		
 		SharedPreferencesUtil.setUsername(LoginActivity.this, username);
 		SharedPreferencesUtil.setPassword(LoginActivity.this, password);
-		final UserDao userDao = new UserDao(LoginActivity.this);
-		
+		userDao = new UserDao(LoginActivity.this);
+		List<User> users = userDao.findByUserNameAndPassWord(username,SysUtil.Encryption(password));
+		if(users!=null && users.size()>0){//先判断本地是否有缓存
+			loginOffLine(username, password);
+		}else{
+			loginOnLine(username, password);
+		}
+	}
+	/**
+	 * 在线登录
+	 */
+	private void loginOnLine(final String username,final String password){
 		HRequestCallback<User> request=new HRequestCallback<User>() {
 			@Override
 			public User parseJson(String jsonStr) {
@@ -85,11 +96,10 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 				if(result.isSuccess()){
 					Log.e("LoginActivity", "在线模式");
 					MyToast.showShort(LoginActivity.this, "登录成功");
-					userDao.deleteByUserName(username);
+					/*userDao.deleteByUserName(username);
 					result.setPassword(password);
 					result.setUsername(username);
-					userDao.save(result);
-					
+					userDao.save(result);*/
 					MyApplication application = (MyApplication) getApplication();
 					application.setUser(result);
 					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -104,19 +114,7 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 				Log.e("!!!", "!!!");
 				
 				if(!SysUtil.isNetworkConnected(LoginActivity.this)){
-					List<User> users = userDao.findByUserNameAndPassWord(username,password);
-					if(users.size()>0){
-						Log.e("LoginActivity", "离线模式");
-						MyToast.showShort(LoginActivity.this, "登录成功");
-						MyApplication application = (MyApplication) getApplication();
-						application.setUser(users.get(0));
-						Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-						startActivity(intent);
-						finish();
-					}
-					else{
-						MyToast.showShort(c, errorMsg);
-					}
+					loginOffLine(username, password);
 				}
 				else{
 					MyToast.showShort(c, errorMsg);
@@ -125,5 +123,20 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		};
 		LoginAccess access=new LoginAccess(LoginActivity.this, request);
 		access.login(username, SysUtil.Encryption(password));
+	}
+	
+	private void loginOffLine(String username,String password){
+		List<User> users = userDao.findByUserNameAndPassWord(username,SysUtil.Encryption(password));
+		if(users !=null&&users.size()>0){
+			Log.e("LoginActivity", "离线模式");
+			MyToast.showShort(LoginActivity.this, "登录成功");
+			MyApplication application = (MyApplication) getApplication();
+			application.setUser(users.get(0));
+			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+			startActivity(intent);
+			finish();
+		}else{
+			MyToast.showShort(this, "用户名或密码错误!");
+		}
 	}
 }

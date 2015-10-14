@@ -38,6 +38,7 @@ import android.util.Log;
 
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.access.I.HURL;
+import com.ateam.identity.sign.util.SharedPreferencesUtil;
 import com.team.hbase.utils.SysUtil;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
 /**
@@ -48,6 +49,8 @@ import com.team.hbase.widget.dialog.CustomProgressDialog;
  * @TODO
  */
 public class HBaseAccess<T> implements HURL{
+	public static String BASE_URL = "http://c641484739.xicp.net/jspx";
+	
 	private CustomProgressDialog dialog;
 	private static final ExecutorService executorService=Executors.newCachedThreadPool();
 	private Handler handler;
@@ -120,13 +123,11 @@ public class HBaseAccess<T> implements HURL{
 		if(isShow()){
 			dialog.show();
 		}
+		url = SharedPreferencesUtil.getURL(mContext) + url;
 		executorService.execute(new TaskRunnable(url, nvps,files));
 	}
 	public void execute(String url,List<NameValuePair> nvps){
-		if(isShow()){
-			dialog.show();
-		}
-		executorService.execute(new TaskRunnable(url, nvps,null));
+		execute(url,nvps,null);
 	}
 	protected void execute(String url){
 		execute(url, null);

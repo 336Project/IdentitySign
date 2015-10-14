@@ -1,5 +1,7 @@
 package com.ateam.identity.sign.util;
 
+import com.ateam.identity.sign.access.HBaseAccess;
+
 import android.content.Context;
 
 import android.content.SharedPreferences;
@@ -32,6 +34,20 @@ public class SharedPreferencesUtil {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(SET,
 				Context.MODE_PRIVATE);
 		String result = sharedPreferences.getString("password", "");
+		return result;
+	}
+	
+	public static void setURL(Context context, String url) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SET,
+				Context.MODE_PRIVATE);
+		Editor edit = sharedPreferences.edit();
+		edit.putString("url", url);
+		edit.commit();
+	}
+	public static String getURL(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SET,
+				Context.MODE_PRIVATE);
+		String result = sharedPreferences.getString("url", HBaseAccess.BASE_URL);
 		return result;
 	}
 }

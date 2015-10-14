@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -46,19 +46,32 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	private SignAccess mAccess;
 	private SignObject signObject;
 	private boolean isSign = false;//是否正在签到
+	
+	private ImageView rightIcon;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_main);
 		setActionBarTitle("首页");
+		rightIcon=getRightIcon();
 		getLeftIcon().setImageResource(R.drawable.icon_back);
-		getRightIcon().setImageResource(R.drawable.icon_right);
-		getRightIcon().setOnClickListener(new OnClickListener() {
+		rightIcon.setImageResource(R.drawable.icon_right);
+		rightIcon.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, SetActivity.class);
 				startActivity(intent );
+			}
+		});
+		rightIcon.setVisibility(View.INVISIBLE);
+		getTitleView().setLongClickable(true);
+		getTitleView().setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				rightIcon.setVisibility(View.VISIBLE);
+				return true;
 			}
 		});
 		initView();

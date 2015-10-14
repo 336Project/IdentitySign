@@ -7,9 +7,12 @@ package com.ateam.identity.sign.access.I;
  */
 public interface HURL {
 	//login
-	public static final String URL_USER_LOGIN = "http://c641484739.xicp.net/jspx/webservice/app/login.do";
+	public static final String URL_USER_LOGIN = "/webservice/app/login.do";
 	//查找学生列表
-	public static final String FIND_SUTDENT_LIST="http://c641484739.xicp.net/jspx/webservice/app/loadStudent.do";
+	@Deprecated
+	public static final String FIND_SUTDENT_LIST = "/webservice/app/loadStudent.do";
 	//签到接口
-	public static final String SIGN_IN="http://c641484739.xicp.net/jspx/webservice/app/uploadData.do";
+	public static final String SIGN_IN="/webservice/app/uploadData.do";
+	//数据同步
+	public static final String DATA_SYNC="/webservice/app/synData.do";
 }

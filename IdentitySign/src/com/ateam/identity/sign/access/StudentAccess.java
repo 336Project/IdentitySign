@@ -7,9 +7,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.ateam.identity.sign.access.I.HRequestCallback;
-import com.ateam.identity.sign.moduel.Student;
 import com.ateam.identity.sign.moduel.StudentList;
-import com.team.hbase.utils.JSONParse;
 
 
 import android.content.Context;
@@ -20,6 +18,7 @@ import android.content.Context;
  * 2015-9-24下午3:15:04
  * @param <T>
  */
+@Deprecated
 public class StudentAccess extends HBaseAccess<StudentList>{
 
 	
