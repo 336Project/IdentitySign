@@ -48,5 +48,11 @@ public class StudentDao extends HBaseDao {
 	public void deleteAll(){
 		mDb.deleteAll(Student.class);
 	}
+	/**
+	 * 是否可以签到
+	 */
+	public boolean isCanSign(String cardNum,String tCardNum,String classroom){
+		return mDb.findAllByWhere(Student.class, "tCardNum = '"+tCardNum+"' and cardNum = '"+cardNum+"' and classroom='"+classroom+"'").size()>0;
+	}
 	
 }

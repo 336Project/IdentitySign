@@ -94,10 +94,13 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 	 * @param message
 	 * @TODO 
 	 */
+	private boolean isShowDialog = true;
 	private void showProgressDialog(String message) {
-		progressDialog = new CustomProgressDialog(mContext,message);
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
+		if(isShowDialog){
+			progressDialog = new CustomProgressDialog(mContext,message);
+			if (!progressDialog.isShowing()) {
+				progressDialog.show();
+			}
 		}
 	}
 	/**
@@ -106,10 +109,14 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 	 * @TODO
 	 */
 	private void cancleProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
+		if (isShowDialog && progressDialog != null && progressDialog.isShowing()) {
 			progressDialog.cancel();
 			progressDialog = null;
 		}
+	}
+	
+	public void setShowDialog(boolean isShowDialog){
+		this.isShowDialog = isShowDialog;
 	}
 	/**
 	 * 
