@@ -53,6 +53,14 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		setActionBarTitle("首页");
 		getLeftIcon().setImageResource(R.drawable.icon_back);
 		getRightIcon().setImageResource(R.drawable.icon_right);
+		getRightIcon().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, SetActivity.class);
+				startActivity(intent );
+			}
+		});
 		initView();
 	}
 
