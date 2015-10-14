@@ -2,38 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/wxid_hcq"
-    
-     >
-      <TextView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_login_selector"
-            android:gravity="center"
-            android:text="URL配置"
-            android:textSize="20sp"
-            android:onClick="urlSetting"
-            android:textColor="#ffffff" />
+    android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_login_selector"
-            android:gravity="center"
-            android:text="数据同步"
-            android:textSize="20sp"
-            android:onClick="dataSync"
-            android:textColor="#ffffff" />
+    <TextView
+        android:id="@+id/btn_setting_url"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_login_selector"
+        android:gravity="center"
+        android:onClick="urlSetting"
+        android:text="URL配置"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/btn_setting_sync"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_login_selector"
+        android:gravity="center"
+        android:onClick="dataSync"
+        android:text="数据同步"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
 </LinearLayout>

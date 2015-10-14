@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.ateam.identity.sign.R;
@@ -24,17 +25,22 @@ import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
 
-public class SetActivity extends HBaseActivity{
+public class SetActivity extends HBaseActivity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_set);
+		setActionBarTitle("系统设置");
+		getLeftIcon().setImageResource(R.drawable.icon_back);
+		getRightIcon().setVisibility(View.GONE);
+		findViewById(R.id.btn_setting_url).setOnClickListener(this);
+		findViewById(R.id.btn_setting_sync).setOnClickListener(this);
 	}
 	/**
 	 * url配置 
 	 */
-	public void urlSetting(View view){
+	public void urlSetting(){
 		final View dialogView = View.inflate(this, R.layout.url_setting, null);
 		final EditText input = (EditText) dialogView.findViewById(R.id.input);
 		input.setText(SharedPreferencesUtil.getURL(this));
@@ -61,7 +67,7 @@ public class SetActivity extends HBaseActivity{
 	/**
 	 * 数据同步
 	 */
-	public void dataSync(View view){
+	public void dataSync(){
 		final CustomProgressDialog dialog= new CustomProgressDialog(this, "数据正在保存本地...");;
 		DataSyncAccess access = new DataSyncAccess(this, new HRequestCallback<DataSync>() {
 			
@@ -85,12 +91,14 @@ public class SetActivity extends HBaseActivity{
 							List<Student> students = result.getStudents();
 							if(users != null){
 								UserDao userDao = new UserDao(getApplicationContext());
+								userDao.deleteAll();
 								for (User user : users) {
 									userDao.save(user);
 								}
 							}
 							if(students != null){
 								StudentDao studentDao = new StudentDao(getApplicationContext());
+								studentDao.deleteAll();
 								for (Student student : students) {
 									studentDao.save(student);
 								}
@@ -107,5 +115,18 @@ public class SetActivity extends HBaseActivity{
 			}
 		});
 		access.execute();
+	}
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_setting_url:
+			urlSetting();
+			break;
+		case R.id.btn_setting_sync:
+			dataSync();
+			break;
+		default:
+			break;
+		}
 	}
 }

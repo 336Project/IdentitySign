@@ -48,7 +48,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private PinyinComparator pinyinComparator;//根据拼音来排列ListView里面的数据类
 	
 	private List<SortModel> SourceDateList;
-	private ArrayList<Student> mListStudent;//获取的学员信息
+	private List<Student> mListStudent;//获取的学员信息
 	private MyApplication mAPP;
 	private StudentDao studentDao;
 	private TextView mTvTime;//获取当前时间
@@ -87,6 +87,9 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			@Override
 			public void onTouchingLetterChanged(String s) {
 				// 该字母首次出现的位置
+				if(adapter == null){
+					return;
+				}
 				int position = adapter.getPositionForSection(s.charAt(0));
 				if (position != -1) {
 					sortListView.setSelection(position);
@@ -119,9 +122,9 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	
 	//获取数据
 	private void initData(){
-//		mListStudent=(ArrayList<Student>) studentDao.findByTeacherID(mAPP.getUser().getCardNum(),mAPP.getUser().getClassroom());
+		mListStudent=studentDao.findByTeacherID(mAPP.getUser().getCardNum(),mAPP.getClassroom());
 		//测试数据
-		mListStudent=new ArrayList<Student>();
+		/*mListStudent=new ArrayList<Student>();
 		for (int i = 0; i < 10; i++) {
 			Student student=new Student();
 			student.setCardNum("1021252455214"+i);
@@ -133,7 +136,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				student.setName("miaoli"+i);
 			}
 			mListStudent.add(student);
-		}
+		}*/
 		if(mListStudent!=null&&mListStudent.size()>0){
 			SourceDateList = filledData(mListStudent);
 
@@ -152,7 +155,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	 * @param date
 	 * @return
 	 */
-	private List<SortModel> filledData(ArrayList<Student> date) {
+	private List<SortModel> filledData(List<Student> date) {
 		List<SortModel> mSortList = new ArrayList<SortModel>();
 
 		for (int i = 0; i < date.size(); i++) {

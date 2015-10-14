@@ -10,25 +10,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingTop="20dp"
         android:orientation="horizontal" >
 
         <LinearLayout
+            android:id="@+id/layout_sign_info"
+        	android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:layout_marginLeft="80dp"
+            android:layout_weight="1.5"
             android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="当前签到人:"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal" >
 
                 <ImageView
@@ -53,14 +58,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             android:text="姓名:" />
 
                         <TextView
                             android:id="@+id/tv_sign_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -72,14 +77,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             android:text="身份证:" />
 
                         <TextView
                             android:id="@+id/tv_sign_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -91,14 +96,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             android:text="性别:" />
 
                         <TextView
                             android:id="@+id/tv_sign_sex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                              />
                     </LinearLayout>
                 </LinearLayout>
@@ -109,8 +114,7 @@
             android:id="@+id/linearLayout_right"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -123,14 +127,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="姓名:"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -142,14 +146,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="身份证:"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/tv_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -161,14 +165,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="性别:"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/tv_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -181,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="所在班级:"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

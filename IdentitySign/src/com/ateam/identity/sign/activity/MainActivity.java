@@ -53,7 +53,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	private SignAccess mAccess;
 	private SignObject signObject;
 	private boolean isSign = false;//是否正在签到
-	
+	private MyApplication mMyApp;
 	
 	private ImageView rightIcon;
 	
@@ -69,12 +69,14 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		setBaseContentView(R.layout.activity_main);
 		setActionBarTitle("首页");
 		rightIcon=getRightIcon();
-		getLeftIcon().setImageResource(R.drawable.icon_back);
+		//getLeftIcon().setImageResource(R.drawable.icon_back);
+		getLeftIcon().setVisibility(View.GONE);
 		rightIcon.setImageResource(R.drawable.icon_right);
 		rightIcon.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				removeRunnable();
 				Intent intent = new Intent(MainActivity.this, SetActivity.class);
 				startActivity(intent );
 			}
@@ -94,9 +96,9 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 
 	private void initView() {
 		
-		MyApplication application = (MyApplication) getApplication();
-		User user = application.getUser();
-		
+		mMyApp = (MyApplication) getApplication();
+		User user = mMyApp.getUser();
+		findViewById(R.id.layout_sign_info).setVisibility(View.INVISIBLE);
 		mSignImg = (ImageView) findViewById(R.id.iv_sign_img);
 		mSignName = (TextView) findViewById(R.id.tv_sign_name);
 		mSignNum = (TextView) findViewById(R.id.tv_sign_num);
@@ -118,7 +120,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		else if(split.length==1){
 			TextView textView = new TextView(this);
 			textView.setText(split[0]);
-			textView.setTextSize(18);
+			textView.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size));
 			mLinearLayoutClass.addView(textView);
 			currClassroom = split[0];
 		}
@@ -129,7 +131,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				RadioButton radioButton = new RadioButton(MainActivity.this);
 				final String nowClass =split[i];
 				radioButton.setText(split[i]);
-				radioButton.setTextSize(18);
+				radioButton.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size));
 				radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -193,7 +195,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 					mAccess.sign(signList);
 				}else{
 					isSign = false;
-					MyToast.showShort(MainActivity.this, "抱歉，你不是该班级的人员");
+					MyToast.showShort(MainActivity.this, "抱歉，你不是该班级的成员");
 					postRunnable();
 				}
 			}
@@ -209,6 +211,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	@SuppressWarnings("deprecation")
 	private void updatePeople(People people) {
 		if(people != null){
+			findViewById(R.id.layout_sign_info).setVisibility(View.VISIBLE);
 			if (people.getPhoto() != null) {
 				Bitmap photo = BitmapFactory.decodeByteArray(people.getPhoto(), 0,
 						people.getPhoto().length);
@@ -243,6 +246,8 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 			asyncSFZ.execute(SFZ.THIRD);
 			break;
 		case R.id.btn_sign_manul:
+			mMyApp.setClassroom(currClassroom);
+			removeRunnable();
 			startActivity(new Intent(this, ManulSignInActivity.class));
 			break;
 
@@ -292,6 +297,18 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	}
 	
 	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.i("MainActivity", "onPause");
+		removeRunnable();
+	}
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Log.i("MainActivity", "onStop");
+		removeRunnable();
+	}
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		Log.i("MainActivity", "onDestroy");
@@ -336,7 +353,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	//private boolean isCancel = false;//是否取消自动读取二代身份证
 	private void postRunnable(){
 		removeRunnable();
-		mReadCardHandler.postDelayed(mReadCardRunnable, 1000*2);
+		mReadCardHandler.postDelayed(mReadCardRunnable, 1000*1);
 	}
 	
 	private void removeRunnable(){

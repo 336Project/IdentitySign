@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class MyApplication extends Application{
 	private User user;
+	private String classroom;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -22,5 +23,11 @@ public class MyApplication extends Application{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getClassroom() {
+		return classroom;
+	}
+	public void setClassroom(String classroom) {
+		this.classroom = classroom;
 	}
 }

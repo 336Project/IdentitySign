@@ -2,6 +2,8 @@ package com.ateam.identity.sign.moduel;
 
 import java.io.Serializable;
 
+import com.ateam.identity.sign.util.SysUtil;
+
 import net.tsz.afinal.annotation.sqlite.Table;
 import net.tsz.afinal.annotation.sqlite.Transient;
 
@@ -33,7 +35,7 @@ public class User implements Serializable{
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = SysUtil.formate(name);
 	}
 	public String getCardNum() {
 		return cardNum;
@@ -81,12 +83,12 @@ public class User implements Serializable{
 		return classroom;
 	}
 	public void setClassroom(String classroom) {
-		this.classroom = classroom;
+		this.classroom = SysUtil.formate(classroom);
 	}
 	public String getSchool() {
 		return school;
 	}
 	public void setSchool(String school) {
-		this.school = school;
+		this.school = SysUtil.formate(school);
 	}
 }

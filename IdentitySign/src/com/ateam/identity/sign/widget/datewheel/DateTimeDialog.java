@@ -59,7 +59,7 @@ public class DateTimeDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		View view=getLayoutInflater().inflate(R.layout.dialog_datetime, null);
 		this.setContentView(view,params);
 		//setContentView(

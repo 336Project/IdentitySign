@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -73,6 +76,7 @@ public class SysUtil {
 	 * @param editText
 	 *            :进行显示选中时间的 EditText对象
 	 */
+	@SuppressWarnings("deprecation")
 	public static void showDateListener(Context context,final View view) {
 		Dialog dialog = new DateTimeDialog(
 				context,
@@ -89,6 +93,12 @@ public class SysUtil {
 					}
 				},true);
 		dialog.show();
+		WindowManager windowManager = dialog.getWindow().getWindowManager();
+		Display display = windowManager.getDefaultDisplay();
+		WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+		lp.width = (int)(display.getWidth()/2); //设置宽度
+		lp.height = (int)(display.getHeight());
+		dialog.getWindow().setAttributes(lp);
 	}
 	
 	//密码加密
@@ -115,6 +125,15 @@ public class SysUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	public static String formate(String str){
+		try {
+			str = new String(str.getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 	
 }
