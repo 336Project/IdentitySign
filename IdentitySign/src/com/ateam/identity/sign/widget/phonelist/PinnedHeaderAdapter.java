@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ateam.identity.sign.R;
-import com.ateam.identity.sign.activity.ManulSignInActivity;
+import com.ateam.identity.sign.activity.XXManulSignInActivity;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -203,7 +203,7 @@ public class PinnedHeaderAdapter extends BaseAdapter implements OnScrollListener
 
 	@Override
 	public Filter getFilter() {
-		return ((ManulSignInActivity) mContext).new ListFilter();
+		return ((XXManulSignInActivity) mContext).new ListFilter();
 	}
 
 	public static class ViewHolder {
