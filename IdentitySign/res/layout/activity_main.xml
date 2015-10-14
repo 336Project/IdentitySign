@@ -9,7 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:layout_weight="1"
+        >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -103,12 +105,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        
+        >
 
         <TextView
             android:id="@+id/btn_sign_second"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -117,12 +121,13 @@
             android:background="@drawable/btn_login_selector"
             android:gravity="center"
             android:text="二代身份证签到"
+            android:textSize="20sp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_sign_third"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -131,12 +136,13 @@
             android:background="@drawable/btn_login_selector"
             android:gravity="center"
             android:text="三代身份证签到"
+            android:textSize="20sp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_sign_manul"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -145,6 +151,7 @@
             android:background="@drawable/btn_login_selector"
             android:gravity="center"
             android:text="手动签到"
+            android:textSize="20sp"
             android:textColor="#ffffff" />
     </LinearLayout>
 
