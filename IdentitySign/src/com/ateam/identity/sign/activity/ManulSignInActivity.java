@@ -113,7 +113,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 					mivSelect.setVisibility(View.GONE);
 					adapter.setItemSelect(position, false);
 				}
-				MyToast.showShort(ManulSignInActivity.this,((Student) adapter.getItem(position)).getName());
+//				MyToast.showShort(ManulSignInActivity.this,((Student) adapter.getItem(position)).getName());
 			}
 		});
 		initData();

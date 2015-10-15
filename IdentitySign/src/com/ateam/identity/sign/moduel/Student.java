@@ -25,7 +25,6 @@ public class Student implements Serializable{
 	private String classroom;//所在班级
 	private String sex;//性别
 	
-	
 	public String gettCardNum() {
 		return tCardNum;
 	}
