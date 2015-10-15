@@ -10,19 +10,25 @@ import com.ateam.identity.sign.util.Installation;
 public class SignObject {
 	@Transient
 	public static final String TABLE_SIGN_OBJECT="tb_sign_object";
+	@Transient
+	public static final String TYPE_AUTO = "1";
+	@Transient
+	public static final String TYPE_MANUL = "2";
 	
 	private int id; 
 	private String idcard;
 	private String ip;
 	private String attendanceDate;//sign time
+	private String type;//1:刷卡签到2:手动签到
 	
 	public SignObject(){
 		ip = Installation.getAppId();
 	}
 	
-	public SignObject(String idcard,String attendanceDate){
+	public SignObject(String idcard,String attendanceDate,String type){
 		this.idcard = idcard;
 		this.attendanceDate = attendanceDate;
+		this.type = type;
 		ip = Installation.getAppId();
 	}
 	
@@ -52,5 +58,13 @@ public class SignObject {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

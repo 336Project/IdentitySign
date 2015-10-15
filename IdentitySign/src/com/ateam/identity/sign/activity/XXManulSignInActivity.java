@@ -42,6 +42,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author wtw
  * 2015-9-24下午3:43:03
  */
+@Deprecated
 public class XXManulSignInActivity extends HBaseActivity implements OnClickListener{
 	
 	private ArrayList<Integer> mListSectionPos;// 数据中含有的字母保存
@@ -175,7 +176,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 			public void onSuccess(HBaseObject result) {
 				MyToast.showShort(XXManulSignInActivity.this, "已签到");
 				if(!result.isSuccess()){
-					SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+					SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 					UnCommitInfoDao dao=new UnCommitInfoDao(XXManulSignInActivity.this);
 					dao.save(sign);
 				}
@@ -186,7 +187,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 				// TODO Auto-generated method stub
 				//super.onFail(c, errorMsg);
 				MyToast.showShort(XXManulSignInActivity.this, "已签到");
-				SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+				SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 				UnCommitInfoDao dao=new UnCommitInfoDao(XXManulSignInActivity.this);
 				dao.save(sign);
 			}
@@ -195,7 +196,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 		ArrayList<SignObject> data=new ArrayList<SignObject>();
 		//需要时间格式化：SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		//by 天舞
-		SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString());
+		SignObject sign=new SignObject(mStudentCard, mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 		data.add(sign);
 		access.sign(data);
 	}

@@ -196,7 +196,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				MyToast.showShort(ManulSignInActivity.this, result.getMessage());
 				if(!result.isSuccess()){
 					for (int i = 0; i < mCommitStudent.size(); i++) {
-						SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+						SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 						UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
 						dao.save(sign);
 					}
@@ -209,7 +209,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				//super.onFail(c, errorMsg);
 				MyToast.showShort(ManulSignInActivity.this, "签到成功");
 				for (int i = 0; i < mCommitStudent.size(); i++) {
-					SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+					SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 					UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
 					dao.save(sign);
 				}
@@ -218,7 +218,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 		SignAccess access=new SignAccess(ManulSignInActivity.this, request);
 		ArrayList<SignObject> data=new ArrayList<SignObject>();
 		for (int i = 0; i < mCommitStudent.size(); i++) {
-			SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString());
+			SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
 			data.add(sign);
 		}
 		//需要时间格式化：SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

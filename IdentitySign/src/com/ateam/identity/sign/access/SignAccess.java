@@ -9,7 +9,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.HBaseObject;
@@ -32,7 +31,6 @@ public class SignAccess extends HBaseAccess<HBaseObject>{
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("data", signList);
 		nvps.add(new BasicNameValuePair("studentList", JSONParse.objectToJson(map)));
-		Log.e("", "nvps"+nvps.toString());
 		execute(SIGN_IN, nvps);
 	}
 

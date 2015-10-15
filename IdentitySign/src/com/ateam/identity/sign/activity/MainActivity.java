@@ -190,7 +190,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				if(studentDao.isCanSign(mSignNum.getText().toString(), mTextViewCard.getText().toString(), currClassroom)){
 					//签到
 					List<SignObject> signList = new ArrayList<SignObject>();
-					signObject = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime());
+					signObject = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(),SignObject.TYPE_AUTO);
 					signList.add(signObject);
 					mAccess.sign(signList);
 				}else{

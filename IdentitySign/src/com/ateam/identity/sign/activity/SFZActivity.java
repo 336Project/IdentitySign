@@ -104,7 +104,7 @@ public class SFZActivity extends Activity implements OnClickListener {
 				updateInfo(people);
 				//签到
 				List<SignObject> signList = new ArrayList<SignObject>();
-				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime());
+				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(),SignObject.TYPE_AUTO);
 				signList.add(object);
 				mAccess.sign(signList);
 			}
