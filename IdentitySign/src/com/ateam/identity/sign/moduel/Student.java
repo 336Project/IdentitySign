@@ -25,11 +25,11 @@ public class Student implements Serializable{
 	private String classroom;//所在班级
 	private String sex;//性别
 	
-	public String gettCardNum() {
+	public String getTCardNum() {
 		return tCardNum;
 	}
 
-	public void settCardNum(String tCardNum) {
+	public void setTCardNum(String tCardNum) {
 		this.tCardNum = tCardNum;
 	}
 

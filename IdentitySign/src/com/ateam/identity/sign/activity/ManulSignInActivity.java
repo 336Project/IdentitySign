@@ -163,7 +163,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			sortModel.setCardNum(date.get(i).getCardNum());
 			sortModel.setClassroom(date.get(i).getClassroom());
 			sortModel.setSex(date.get(i).getSex());
-			sortModel.settCardNum(date.get(i).gettCardNum());
+			sortModel.setTCardNum(date.get(i).getTCardNum());
 			sortModel.setSex(date.get(i).getSex());
 			// 汉字转换成拼音
 			String pinyin = characterParser.getSelling(date.get(i).getName());
