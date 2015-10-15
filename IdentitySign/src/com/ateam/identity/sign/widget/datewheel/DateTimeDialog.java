@@ -67,6 +67,7 @@ public class DateTimeDialog extends Dialog {
 		setupViewsListener();
 		setDateTime();
 	}
+	
 	/***
 	 * 初始化控件
 	 */

@@ -114,7 +114,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 					mivSelect.setVisibility(View.GONE);
 					adapter.setItemSelect(position, false);
 				}
-				MyToast.showShort(ManulSignInActivity.this,((SortModel) adapter.getItem(position)).getName());
+//				MyToast.showShort(ManulSignInActivity.this,((SortModel) adapter.getItem(position)).getName());
 			}
 		});
 		initData();
@@ -124,19 +124,19 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private void initData(){
 		mListStudent=studentDao.findByTeacherID(mAPP.getUser().getCardNum(),mAPP.getClassroom());
 		//测试数据
-		/*mListStudent=new ArrayList<Student>();
-		for (int i = 0; i < 10; i++) {
-			Student student=new Student();
-			student.setCardNum("1021252455214"+i);
-			if(i==0){
-				student.setName("xiaoli"+i);
-			}else if(i==1){
-				student.setName("biaoli"+i);
-			}else{
-				student.setName("miaoli"+i);
-			}
-			mListStudent.add(student);
-		}*/
+//		mListStudent=new ArrayList<Student>();
+//		for (int i = 0; i < 10; i++) {
+//			Student student=new Student();
+//			student.setCardNum("1021252455214"+i);
+//			if(i==0){
+//				student.setName("xiaoli"+i);
+//			}else if(i==1){
+//				student.setName("biaoli"+i);
+//			}else{
+//				student.setName("miaoli"+i);
+//			}
+//			mListStudent.add(student);
+//		}
 		if(mListStudent!=null&&mListStudent.size()>0){
 			SourceDateList = filledData(mListStudent);
 
@@ -193,7 +193,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 			
 			@Override
 			public void onSuccess(HBaseObject result) {
-				MyToast.showShort(ManulSignInActivity.this, result.getMessage());
+				MyToast.showShort(ManulSignInActivity.this, "签到成功");
 				if(!result.isSuccess()){
 					for (int i = 0; i < mCommitStudent.size(); i++) {
 						SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
