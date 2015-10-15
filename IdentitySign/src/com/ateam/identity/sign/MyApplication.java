@@ -2,6 +2,7 @@ package com.ateam.identity.sign;
 
 import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.service.UnSignService;
+import com.ateam.identity.sign.util.CrashHandler;
 import com.ateam.identity.sign.util.Installation;
 
 import android.app.Application;
@@ -14,6 +15,7 @@ public class MyApplication extends Application{
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		CrashHandler.init(this);
 		Installation.init(this);
 		Log.e("", "ip"+Installation.getAppId());
 		startService(new Intent(this, UnSignService.class));

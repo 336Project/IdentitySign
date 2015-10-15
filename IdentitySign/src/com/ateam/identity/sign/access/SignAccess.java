@@ -32,7 +32,7 @@ public class SignAccess extends HBaseAccess<HBaseObject>{
 		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("data", signList);
-		Gson gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
+		Gson gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PUBLIC).create();
 		nvps.add(new BasicNameValuePair("studentList", gson.toJson(map)));
 		execute(SIGN_IN, nvps);
 	}

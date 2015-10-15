@@ -67,7 +67,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setBaseContentView(R.layout.activity_main);
-		setActionBarTitle("首页");
+		setActionBarTitle(R.string.app_name);
 		rightIcon=getRightIcon();
 		//getLeftIcon().setImageResource(R.drawable.icon_back);
 		getLeftIcon().setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 	private void initView() {
 		
 		mMyApp = (MyApplication) getApplication();
-		User user = mMyApp.getUser();
+		
 		findViewById(R.id.layout_sign_info).setVisibility(View.INVISIBLE);
 		mSignImg = (ImageView) findViewById(R.id.iv_sign_img);
 		mSignName = (TextView) findViewById(R.id.tv_sign_name);
@@ -108,7 +108,8 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 		mTextViewCard = (TextView) findViewById(R.id.tv_card);
 		mTextViewSex = (TextView) findViewById(R.id.tv_sex);
 		mLinearLayoutClass = (LinearLayout) findViewById(R.id.linearLayout_class); //班级
-		
+		User user = mMyApp.getUser();
+		if(user != null){
 		mTextViewName.setText(user.getName());
 		mTextViewCard.setText(user.getCardNum());
 		mTextViewSex.setText(user.getSex());
@@ -143,6 +144,7 @@ public class MainActivity extends HBaseActivity implements OnClickListener {
 				radioGroup.addView(radioButton);
 			}
 			mLinearLayoutClass.addView(radioGroup);
+		}
 		}
 		
 		//findViewById(R.id.btn_sign_second).setOnClickListener(this);
