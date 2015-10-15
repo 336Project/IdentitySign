@@ -13,6 +13,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver{
 	public void onReceive(Context context, Intent intent) {
 		Log.e("BootBroadcastReceiver", "开机自启动.....");
 		Intent loginIntent = new Intent(context, LoginActivity.class);
+		loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(loginIntent);
 	}
 

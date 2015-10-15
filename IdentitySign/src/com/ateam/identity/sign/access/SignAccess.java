@@ -1,5 +1,6 @@
 package com.ateam.identity.sign.access;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,8 @@ import android.content.Context;
 import com.ateam.identity.sign.access.I.HRequestCallback;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
-import com.team.hbase.utils.JSONParse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class SignAccess extends HBaseAccess<HBaseObject>{
 
@@ -30,7 +32,8 @@ public class SignAccess extends HBaseAccess<HBaseObject>{
 		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("data", signList);
-		nvps.add(new BasicNameValuePair("studentList", JSONParse.objectToJson(map)));
+		Gson gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
+		nvps.add(new BasicNameValuePair("studentList", gson.toJson(map)));
 		execute(SIGN_IN, nvps);
 	}
 

@@ -14,8 +14,7 @@ public class SignObject {
 	public static final String TYPE_AUTO = "1";
 	@Transient
 	public static final String TYPE_MANUL = "2";
-	
-	private int id; 
+	protected int id;
 	private String idcard;
 	private String ip;
 	private String attendanceDate;//sign time
