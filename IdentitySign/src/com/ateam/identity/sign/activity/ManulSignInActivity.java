@@ -21,7 +21,6 @@ import com.ateam.identity.sign.widget.phonelist2.PinyinComparator;
 import com.ateam.identity.sign.widget.phonelist2.SideBar;
 import com.ateam.identity.sign.widget.phonelist2.SideBar.OnTouchingLetterChangedListener;
 import com.ateam.identity.sign.widget.phonelist2.SortAdapter;
-import com.ateam.identity.sign.widget.phonelist2.SortModel;
 import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 
@@ -47,7 +46,7 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	private CharacterParser characterParser;//汉字转换成拼音的类
 	private PinyinComparator pinyinComparator;//根据拼音来排列ListView里面的数据类
 	
-	private List<SortModel> SourceDateList;
+	private List<Student> SourceDateList;
 	private List<Student> mListStudent;//获取的学员信息
 	private MyApplication mAPP;
 	private StudentDao studentDao;
@@ -106,15 +105,15 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 				// 这里要利用adapter.getItem(position)来获取当前position所对应的对象
 				ImageView mivSelect = (ImageView)view.findViewById(R.id.iv_select);
 				if(mivSelect.getVisibility()==View.GONE){
-					mCommitStudent.add(mListStudent.get(position));
+					mCommitStudent.add((Student)adapter.getItem(position));
 					mivSelect.setVisibility(View.VISIBLE);
 					adapter.setItemSelect(position, true);
 				}else{
-					mCommitStudent.remove(mListStudent.get(position));
+					mCommitStudent.remove((Student)adapter.getItem(position));
 					mivSelect.setVisibility(View.GONE);
 					adapter.setItemSelect(position, false);
 				}
-//				MyToast.showShort(ManulSignInActivity.this,((SortModel) adapter.getItem(position)).getName());
+				MyToast.showShort(ManulSignInActivity.this,((Student) adapter.getItem(position)).getName());
 			}
 		});
 		initData();
@@ -155,12 +154,17 @@ public class ManulSignInActivity extends HBaseActivity implements OnClickListene
 	 * @param date
 	 * @return
 	 */
-	private List<SortModel> filledData(List<Student> date) {
-		List<SortModel> mSortList = new ArrayList<SortModel>();
+	private List<Student> filledData(List<Student> date) {
+		List<Student> mSortList = new ArrayList<Student>();
 
 		for (int i = 0; i < date.size(); i++) {
-			SortModel sortModel = new SortModel();
+			Student sortModel = new Student();
 			sortModel.setName(date.get(i).getName());
+			sortModel.setCardNum(date.get(i).getCardNum());
+			sortModel.setClassroom(date.get(i).getClassroom());
+			sortModel.setSex(date.get(i).getSex());
+			sortModel.settCardNum(date.get(i).gettCardNum());
+			sortModel.setSex(date.get(i).getSex());
 			// 汉字转换成拼音
 			String pinyin = characterParser.getSelling(date.get(i).getName());
 			String sortString = pinyin.substring(0, 1).toUpperCase();

@@ -324,7 +324,7 @@ public class XXManulSignInActivity extends HBaseActivity implements OnClickListe
 					}
 					for (Student student : mListStudent) {
 						if(ifHaveNet){
-							student.setTCardNum(mAPP.getUser().getCardNum());
+							student.settCardNum(mAPP.getUser().getCardNum());
 							studentDao.save(student);
 						}
 					}

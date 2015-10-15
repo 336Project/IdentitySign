@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ateam.identity.sign.R;
+import com.ateam.identity.sign.moduel.Student;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,11 +16,11 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 public class SortAdapter extends BaseAdapter implements SectionIndexer{
-	private List<SortModel> list = null;
+	private List<Student> list = null;
 //	private ArrayList<Integer> selectStudent=new ArrayList<Integer>();
 	private Context mContext;
 	
-	public SortAdapter(Context mContext, List<SortModel> list) {
+	public SortAdapter(Context mContext, List<Student> list) {
 		this.mContext = mContext;
 		this.list = list;
 	}
@@ -28,7 +29,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 	 * 当ListView数据发生变化时,调用此方法来更新ListView
 	 * @param list
 	 */
-	public void updateListView(List<SortModel> list){
+	public void updateListView(List<Student> list){
 		this.list = list;
 		notifyDataSetChanged();
 	}
@@ -47,7 +48,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 
 	public View getView(final int position, View view, ViewGroup arg2) {
 		ViewHolder viewHolder = null;
-		final SortModel mContent = list.get(position);
+		final Student mContent = list.get(position);
 		if (view == null) {
 			viewHolder = new ViewHolder();
 			view = LayoutInflater.from(mContext).inflate(R.layout.silidebar_list_item, null);

@@ -13,20 +13,41 @@ public class Student implements Serializable{
 	public static final String TABLE_STUDENT="tb_student";
 	@Transient
 	private static final long serialVersionUID = 1L;
+	@Transient
+	private String sortLetters;  //显示数据拼音的首字母
+	@Transient
+	private Boolean ifSelect=false;//是否被选中
 	
 	private int id;
+	private String name;//学生名字
 	private String tCardNum;//老师的身份证号
 	private String cardNum;//学生身份证号
-	private String name;//学生名字
 	private String classroom;//所在班级
 	private String sex;//性别
 	
-	public String getTCardNum() {
+	
+	public String gettCardNum() {
 		return tCardNum;
 	}
 
-	public void setTCardNum(String tCardNum) {
+	public void settCardNum(String tCardNum) {
 		this.tCardNum = tCardNum;
+	}
+
+	public String getSortLetters() {
+		return sortLetters;
+	}
+
+	public void setSortLetters(String sortLetters) {
+		this.sortLetters = sortLetters;
+	}
+
+	public Boolean getIfSelect() {
+		return ifSelect;
+	}
+
+	public void setIfSelect(Boolean ifSelect) {
+		this.ifSelect = ifSelect;
 	}
 
 	public String getClassroom() {
