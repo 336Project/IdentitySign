@@ -75,6 +75,7 @@
     <dimen name="login_check_marginTop">-5dp</dimen>
     <dimen name="login_check_paddingLeft">14dp</dimen>
     <dimen name="login_check_textSize">18sp</dimen>
+    <dimen name="main_check_width">568dp</dimen>
     
     
     <dimen name="index_bar_view_text_size">12sp</dimen>

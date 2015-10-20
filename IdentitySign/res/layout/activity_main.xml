@@ -214,14 +214,13 @@
 
         <TextView
             android:id="@+id/btn_sign_third"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/main_check_width"
             android:layout_height="80dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login_selector"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="三代身份证签到"
             android:textColor="#ffffff"
@@ -229,7 +228,7 @@
 
         <TextView
             android:id="@+id/btn_sign_manul"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/main_check_width"
             android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
@@ -237,6 +236,7 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login_selector"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="手动签到"
             android:textColor="#ffffff"
