@@ -25,7 +25,7 @@ public class UnCommitInfoDao extends HBaseDao {
 	}
 	
 	public List<SignObject> query(){
-		return mDb.findAll(SignObject.class,"id DESC limit "+LIMIT);
+		return mDb.findAll(SignObject.class,"id DESC");
 	}
 	
 	public void deleteByIDCard(int idcard){

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
@@ -26,6 +27,9 @@ import com.team.hbase.utils.JSONParse;
 public class LoginActivity extends HBaseActivity implements OnClickListener{
 	private EditText et_username;
 	private EditText et_password;
+	
+	private ImageView rightIcon;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +47,29 @@ public class LoginActivity extends HBaseActivity implements OnClickListener{
 		
 		et_username.setText(SharedPreferencesUtil.getUsername(LoginActivity.this));
 		et_password.setText(SharedPreferencesUtil.getPassword(LoginActivity.this));
+		
+		rightIcon=getRightIcon();
+		//getLeftIcon().setImageResource(R.drawable.icon_back);
+		getLeftIcon().setVisibility(View.GONE);
+		rightIcon.setImageResource(R.drawable.icon_right);
+		rightIcon.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this, SetActivity.class);
+				startActivity(intent );
+			}
+		});
+		rightIcon.setVisibility(View.INVISIBLE);
+		getTitleView().setLongClickable(true);
+		getTitleView().setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				rightIcon.setVisibility(View.VISIBLE);
+				return true;
+			}
+		});
 		
 	}
 	@Override
