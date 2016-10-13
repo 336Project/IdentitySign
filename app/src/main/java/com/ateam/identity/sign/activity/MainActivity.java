@@ -30,7 +30,6 @@ import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.access.inter.HRequestCallback;
-import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.AppManager;
 import com.team.hbase.utils.JSONParse;
 
@@ -43,7 +42,7 @@ import android_serialport_api.AsyncParseSFZ.SFZ;
 import android_serialport_api.ParseSFZAPI.People;
 import android_serialport_api.SerialPortManager;
 
-public class MainActivity extends HBaseActivity implements OnClickListener {
+public class MainActivity extends PermissionActivity implements OnClickListener {
 	private TextView mTextViewName;
 	private TextView mTextViewCard;
 	private TextView mTextViewSex;

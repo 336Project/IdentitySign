@@ -1,6 +1,5 @@
 package com.ateam.identity.sign.activity;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,7 +32,7 @@ import android_serialport_api.ParseSFZAPI.People;
 import android_serialport_api.SerialPortManager;
 
 @Deprecated
-public class SFZActivity extends Activity implements OnClickListener {
+public class SFZActivity extends PermissionActivity implements OnClickListener {
 	private TextView sfz_name;
 	private TextView sfz_sex;
 	private TextView sfz_nation;

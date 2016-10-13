@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * 2015-9-24下午3:43:03
  */
 @Deprecated
-public class XXManulSignInActivity extends HBaseActivity implements OnClickListener{
+public class XXManulSignInActivity extends PermissionActivity implements OnClickListener{
 	
 	private ArrayList<Integer> mListSectionPos;// 数据中含有的字母保存
 	private ArrayList<String> mListItems;// 要进行显示的数组
