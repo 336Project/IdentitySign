@@ -53,7 +53,7 @@ public class HBaseAccess<T> {
 	private static final ExecutorService executorService=Executors.newCachedThreadPool();
 	private Handler handler;
 	private HRequestCallback<T> callback;
-	private Context mContext;
+	protected Context mContext;
 	
 	private boolean mIsShow=true;
 	public HBaseAccess(final Context c,final HRequestCallback<T> requestCallback){
@@ -109,32 +109,6 @@ public class HBaseAccess<T> {
 			}
 		});
 	}
-	/**
-	 * 
-	 * @author 李晓伟
-	 * 2015-3-3 下午5:27:11
-	 * @param url
-	 * @param nvps
-	 * @TODO 执行
-	 */
-	public void execute(String url,List<NameValuePair> nvps,Map<String, File> files){
-		if(isShow()){
-			dialog.show();
-		}
-		executorService.execute(new TaskRunnable(url, nvps,files));
-	}
-
-	public void execute(String url,Map<String,String> map){
-		if(map!=null && !map.isEmpty()){
-			List<NameValuePair> nvps=new ArrayList<NameValuePair>();
-			for(Entry<String, String> entry:map.entrySet()){
-				nvps.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
-			}
-			execute(url,nvps);
-		}else {
-			execute(url);
-		}
-	}
 
 	private void execute(String url,List<NameValuePair> nvps){
 		if(isShow()){
@@ -142,6 +116,43 @@ public class HBaseAccess<T> {
 		}
 		executorService.execute(new TaskRunnable(url, nvps,null));
 	}
+
+	protected void execute(String url,Map<String,String> map){
+		if(map!=null && !map.isEmpty()){
+			List<NameValuePair> nvps=new ArrayList<NameValuePair>();
+			for(Entry<String, String> entry:map.entrySet()){
+				nvps.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
+			}
+			execute(url,nvps);
+		}
+	}
+
+
+	/**
+	 *
+	 * @author 李晓伟
+	 * 2015-3-3 下午5:27:11
+	 * @param url
+	 * @param nvps
+	 * @TODO 执行
+	 */
+	private void execute(String url,List<NameValuePair> nvps,Map<String, File> files){
+		if(isShow()){
+			dialog.show();
+		}
+		executorService.execute(new TaskRunnable(url, nvps,files));
+	}
+
+	protected void execute(String url,Map<String,String> map,Map<String, File> files){
+		if(map!=null && !map.isEmpty()){
+			List<NameValuePair> nvps=new ArrayList<NameValuePair>();
+			for(Entry<String, String> entry:map.entrySet()){
+				nvps.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
+			}
+			execute(url,nvps,files);
+		}
+	}
+
 
 	protected void execute(String url){
 		execute(url, new ArrayList<NameValuePair>());

@@ -3,7 +3,6 @@ package com.ateam.identity.sign.access;
 import android.content.Context;
 
 import com.ateam.identity.sign.moduel.StudentList;
-import com.team.hbase.access.HBaseAccess;
 import com.team.hbase.access.inter.HRequestCallback;
 
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import static com.ateam.identity.sign.access.I.HURL.FIND_SUTDENT_LIST;
  * 2015-9-24下午3:15:04
  */
 @Deprecated
-public class StudentAccess extends HBaseAccess<StudentList> {
+public class StudentAccess extends AbsAccess<StudentList> {
 
 	
 	public StudentAccess(Context c, HRequestCallback<StudentList> requestCallback) {

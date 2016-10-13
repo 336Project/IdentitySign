@@ -6,7 +6,6 @@ import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.team.hbase.access.HBaseAccess;
 import com.team.hbase.access.inter.HRequestCallback;
 
 import java.lang.reflect.Modifier;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 import static com.ateam.identity.sign.access.I.HURL.SIGN_IN;
 
-public class SignAccess extends HBaseAccess<HBaseObject> {
+public class SignAccess extends AbsAccess<HBaseObject> {
 
 	public SignAccess(Context c, HRequestCallback<HBaseObject> requestCallback) {
 		super(c, requestCallback);
