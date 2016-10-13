@@ -19,13 +19,12 @@ import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SharedPreferencesUtil;
 import com.team.hbase.access.inter.HRequestCallback;
-import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
 
 import java.util.List;
 
-public class SetActivity extends HBaseActivity implements OnClickListener{
+public class SetActivity extends PermissionActivity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

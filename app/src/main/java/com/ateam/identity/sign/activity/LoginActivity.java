@@ -18,17 +18,17 @@ import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SharedPreferencesUtil;
 import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.access.inter.HRequestCallback;
-import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class LoginActivity extends HBaseActivity implements OnClickListener{
+public class LoginActivity extends PermissionActivity implements OnClickListener{
 	private EditText et_username;
 	private EditText et_password;
 	
 	private ImageView rightIcon;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

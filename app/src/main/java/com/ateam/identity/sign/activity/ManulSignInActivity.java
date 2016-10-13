@@ -26,7 +26,6 @@ import com.ateam.identity.sign.widget.phonelist2.SideBar;
 import com.ateam.identity.sign.widget.phonelist2.SideBar.OnTouchingLetterChangedListener;
 import com.ateam.identity.sign.widget.phonelist2.SortAdapter;
 import com.team.hbase.access.inter.HRequestCallback;
-import com.team.hbase.activity.HBaseActivity;
 import com.team.hbase.utils.JSONParse;
 
 import java.lang.reflect.Type;
@@ -38,7 +37,7 @@ import java.util.List;
  * 
  * @author wtw 2015-9-24下午3:43:03
  */
-public class ManulSignInActivity extends HBaseActivity implements OnClickListener{
+public class ManulSignInActivity extends PermissionActivity implements OnClickListener{
 	private ListView sortListView;// 数据显示的listview
 	private SideBar sideBar;// 字母滑动的bar
 	private TextView dialog;// 显示当前选中的字母
