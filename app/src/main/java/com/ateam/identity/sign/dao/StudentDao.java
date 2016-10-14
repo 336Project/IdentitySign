@@ -31,6 +31,11 @@ public class StudentDao extends HBaseDao {
 		System.out.println("tCardNum:"+teacherID+" classroom:"+classroom);
 		return mDb.findAllByWhere(Student.class, "tCardNum = '"+teacherID+"'"+"and classroom = '"+classroom+"'");
 	}
+//	//根据老师的身份证查找未出席的学生信息
+//	public List<Student> findAbsentStudentByTeacherID(String teacherID,String classroom,){
+//		System.out.println("tCardNum:"+teacherID+" classroom:"+classroom);
+//		return mDb.findAllByWhere(Student.class, "tCardNum = '"+teacherID+"'"+"and classroom = '"+classroom+"'");
+//	}
 	
 	//根据老师的身份证查找学生信息
 	public boolean findTeacher(String teacherID){

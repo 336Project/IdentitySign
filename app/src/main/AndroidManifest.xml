@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ateam.identity.sign"
-          >
+          package="com.ateam.identity.sign">
 
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 在SDCard中创建与删除文件权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 往SDCard写入数据权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- 解锁屏幕 -->
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
-    <uses-permission android:name="android.permission.FLASHLIGHT" >
+    <uses-permission android:name="android.permission.FLASHLIGHT">
     </uses-permission>
-    <uses-permission android:name="android.permission.VIBRATE" >
+    <uses-permission android:name="android.permission.VIBRATE">
     </uses-permission>
 
     <application
@@ -33,56 +31,62 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name="com.ateam.identity.sign.activity.SFZActivity"
-            android:label="@string/app_name" >
+            android:name=".activity.SFZActivity"
+            android:label="@string/app_name">
         </activity>
         <activity
-            android:name="com.ateam.identity.sign.activity.LoginActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:name=".activity.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ateam.identity.sign.activity.XXManulSignInActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:name=".activity.XXManulSignInActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name="com.ateam.identity.sign.activity.ManulSignInActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:name=".activity.ManulSignInActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name="com.ateam.identity.sign.activity.MainActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:name=".activity.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name="com.ateam.identity.sign.activity.SetActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:name=".activity.SetActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
         </activity>
 
-        <service android:name="com.ateam.identity.sign.service.UnSignService" >
+        <service android:name=".service.UnSignService">
         </service>
 
-        <receiver android:name="com.ateam.identity.sign.service.NetworkBroadcastReceiver" >
+        <receiver android:name=".service.NetworkBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.ateam.identity.sign.service.BootBroadcastReceiver">
+        <receiver android:name=".service.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.ClassQueryActivity"
+                  android:screenOrientation="landscape"
+            >
+        </activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.ateam.identity.sign.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -13,11 +14,14 @@ import android.widget.TextView;
 import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.SignAccess;
+import com.ateam.identity.sign.dao.SignRecordDao;
 import com.ateam.identity.sign.dao.StudentDao;
 import com.ateam.identity.sign.dao.UnCommitInfoDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
+import com.ateam.identity.sign.moduel.SignRecord;
 import com.ateam.identity.sign.moduel.Student;
+import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.ateam.identity.sign.widget.phonelist2.CharacterParser;
@@ -197,11 +201,24 @@ public class ManulSignInActivity extends PermissionActivity implements OnClickLi
 			@Override
 			public void onSuccess(HBaseObject result) {
 				MyToast.showShort(ManulSignInActivity.this, "签到成功");
+				Log.e("签到1","签到1");
+				User user = mAPP.getUser();
 				if(!result.isSuccess()){
 					for (int i = 0; i < mCommitStudent.size(); i++) {
 						SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
+						SignRecord signRecord = new SignRecord(mCommitStudent.get(i).getCardNum(),mTvTime.getText().toString(),user.getCardNum(),user.getClassroom());
 						UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
 						dao.save(sign);
+						Log.e("hhhhi","hhhi="+i);
+						SignRecordDao signRecordDao = new SignRecordDao(ManulSignInActivity.this);
+						signRecordDao.save(signRecord);
+					}
+				}
+				else{
+					for (int i = 0; i < mCommitStudent.size(); i++) {
+						SignRecord signRecord = new SignRecord(mCommitStudent.get(i).getCardNum(),mTvTime.getText().toString(),user.getCardNum(),user.getClassroom());
+						SignRecordDao signRecordDao = new SignRecordDao(ManulSignInActivity.this);
+						signRecordDao.save(signRecord);
 					}
 				}
 			}
@@ -211,10 +228,15 @@ public class ManulSignInActivity extends PermissionActivity implements OnClickLi
 				// TODO Auto-generated method stub
 				//super.onFail(c, errorMsg);
 				MyToast.showShort(ManulSignInActivity.this, "签到成功");
+				Log.e("签到2","签到2");
+				User user = mAPP.getUser();
 				for (int i = 0; i < mCommitStudent.size(); i++) {
 					SignObject sign=new SignObject(mCommitStudent.get(i).getCardNum(), mTvTime.getText().toString(),SignObject.TYPE_MANUL);
+					SignRecord signRecord = new SignRecord(mCommitStudent.get(i).getCardNum(),mTvTime.getText().toString(),user.getCardNum(),user.getClassroom());
 					UnCommitInfoDao dao=new UnCommitInfoDao(ManulSignInActivity.this);
+					SignRecordDao signRecordDao = new SignRecordDao(ManulSignInActivity.this);
 					dao.save(sign);
+					signRecordDao.save(signRecord);
 				}
 			}
 		};

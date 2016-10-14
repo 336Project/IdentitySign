@@ -241,6 +241,21 @@
             android:text="手动签到"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/btn_class_query"
+            android:layout_width="@dimen/main_check_width"
+            android:layout_height="80dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_login_selector"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="未到人员查询"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>

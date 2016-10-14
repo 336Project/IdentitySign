@@ -13,5 +13,8 @@
     
     <color name="login_normal">#E15868</color>
     <color name="login_press">#BC0B4A</color>
-    
+
+    <color name="gray_background">#f5f5f5</color>
+
+    <color name="green_normal">#51d2b7</color>
 </resources>

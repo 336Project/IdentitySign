@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.R;
 import com.ateam.identity.sign.access.SignAccess;
+import com.ateam.identity.sign.dao.SignRecordDao;
 import com.ateam.identity.sign.moduel.HBaseObject;
 import com.ateam.identity.sign.moduel.SignObject;
+import com.ateam.identity.sign.moduel.SignRecord;
+import com.ateam.identity.sign.moduel.User;
 import com.ateam.identity.sign.util.MyToast;
 import com.ateam.identity.sign.util.SysUtil;
 import com.team.hbase.access.inter.HRequestCallback;
@@ -81,6 +85,8 @@ public class SFZActivity extends PermissionActivity implements OnClickListener {
 
 	private void initData() {
 		mediaPlayer = MediaPlayer.create(this, R.raw.ok);
+		final SignRecordDao signRecordDao = new SignRecordDao(this);
+		final User user = ((MyApplication)getApplication()).getUser();
 		mAccess = new SignAccess(this, new HRequestCallback<HBaseObject>() {
 			
 			@Override
@@ -106,6 +112,8 @@ public class SFZActivity extends PermissionActivity implements OnClickListener {
 				List<SignObject> signList = new ArrayList<SignObject>();
 				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(),SignObject.TYPE_AUTO);
 				signList.add(object);
+				SignRecord signRecord = new SignRecord(people.getPeopleIDCode(), SysUtil.getNowTime(),user.getCardNum(),user.getClassroom());
+				signRecordDao.save(signRecord);
 				mAccess.sign(signList);
 			}
 			
