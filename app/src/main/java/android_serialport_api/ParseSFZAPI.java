@@ -8,9 +8,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import cn.com.shptbm.DecodeWlt;
+import com.ateam.identity.sign.R;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.ivsign.android.IDCReader.IDCReaderSDK;
+import com.ivsign.android.IDCReader.SfzFileManager;
 
-
+import android.content.Context;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 
 public class ParseSFZAPI {
@@ -27,7 +33,6 @@ public class ParseSFZAPI {
 	private static final String SFZ_ID_RESPONSE1 = "5000000000";
 	private static final String SFZ_ID_RESPONSE2 = "08";
 	private static final String TURN_OFF_RESPONSE = "RF carrier off!";
-
 
 	private static final String CARD_SUCCESS = "AAAAAA96690508000090";
 	private static final String CARD_SUCCESS2 = "AAAAAA9669090A000090";
@@ -47,11 +52,16 @@ public class ParseSFZAPI {
 
 	public static final int THIRD_GENERATION_CARD = 2321;
 
-	public ParseSFZAPI(String rootPath) {
+	private Context m_Context;
+
+	public ParseSFZAPI(Looper looper, String rootPath, Context context) {
 		this.path = rootPath + File.separator + "wltlib";
+		this.m_Context = context;
 	}
 
 	private Result result;
+
+	private final Logger logger = LoggerFactory.getLogger();
 
 	/**
 	 * 读取身份证信息，此方法为阻塞的，建议放在子线程处理
@@ -59,9 +69,7 @@ public class ParseSFZAPI {
 	 * @return true：成功获取身份证信息，false：返回数据出错，可能是超时，读卡出错，寻卡失败等。
 	 */
 	public Result read(int cardType) {
-		//int count = 0;
 		People people = null;
-		// do {
 		if (cardType == SECOND_GENERATION_CARD) {
 			SerialPortManager.getInstance().write(command1);
 		} else if (cardType == THIRD_GENERATION_CARD) {
@@ -71,23 +79,24 @@ public class ParseSFZAPI {
 		}
 		result = new Result();
 		SerialPortManager.switchRFID = false;
-
 		int length = SerialPortManager.getInstance().read(buffer, 3000, 100);
 		if (length == 0) {
 			result.confirmationCode = Result.TIME_OUT;
 			return result;
 		}
 
+		if (length == 1297 && cardType == THIRD_GENERATION_CARD) {
+			result.confirmationCode = Result.NO_THREECARD;
+			return result;
+		}
+
 		people = decode(buffer, length);
 		if (people == null) {
-			//count++;
 			result.confirmationCode = Result.FIND_FAIL;
 		} else {
 			result.confirmationCode = Result.SUCCESS;
 			result.resultInfo = people;
 		}
-		// } while (people == null && count < 3);
-
 		return result;
 	}
 
@@ -186,7 +195,7 @@ public class ParseSFZAPI {
 		}
 		return false;
 	}
-	
+
 	public boolean turnOn() {
 		byte[] command = TURN_ON.getBytes();
 		SerialPortManager.getInstance().write(command);
@@ -212,7 +221,6 @@ public class ParseSFZAPI {
 		}
 		return "";
 	}
-
 
 	private void reversal(byte[] data) {
 		int length = data.length;
@@ -249,9 +257,9 @@ public class ParseSFZAPI {
 			System.arraycopy(buffer, 10, data, 0, buffer.length - 10);
 			people = decodeInfo(data, length);
 		} else if (result.equalsIgnoreCase(TIMEOUT_RETURN)) {
-			Log.d("decode",TIMEOUT_RETURN);
+			logger.debug(TIMEOUT_RETURN);
 		} else if (result.startsWith(CMD_ERROR)) {
-			Log.d("decode",CMD_ERROR);
+			logger.debug(CMD_ERROR);
 		}
 		return people;
 
@@ -552,19 +560,18 @@ public class ParseSFZAPI {
 	}
 
 	private byte[] parsePhoto(byte[] wltdata) {
-		String bmpPath = path + File.separator + "zp.bmp";
-		String wltPath = path + File.separator + "zp.wlt";
-		if (!isExistsParsePath(wltPath, wltdata)) {
-			return null;
+		SfzFileManager sfzFileManager = new SfzFileManager();
+		if (sfzFileManager.initDB(this.m_Context, R.raw.base, R.raw.license)) {
+			int ret = IDCReaderSDK.Init();
+			if (0 == ret) {
+				ret = IDCReaderSDK.unpack(buffer);
+				if (1 == ret) {
+					byte[] image = IDCReaderSDK.getPhoto();
+					return image;
+				}
+			}
 		}
-
-		int result = DecodeWlt.Wlt2Bmp(wltPath, bmpPath);
-		if (result == 1) {
-			byte[] image = getBytes(bmpPath);
-			return image;
-		} else {
-			return null;
-		}
+		return null;
 	}
 
 	private boolean isExistsParsePath(String wltPath, byte[] wltdata) {
@@ -805,9 +812,10 @@ public class ParseSFZAPI {
 		public static final int FIND_FAIL = 2;
 		public static final int TIME_OUT = 3;
 		public static final int OTHER_EXCEPTION = 4;
+		public static final int NO_THREECARD = 5;
 
 		/**
-		 * 确认码 1: 成功 2：失败 3: 超时 6：其它异常
+		 * 确认码 1: 成功 2：失败 3: 超时 4：其它异常5:不是三代证
 		 */
 		public int confirmationCode;
 

@@ -3,6 +3,7 @@ package android_serialport_api;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ateam.identity.sign.MyApplication;
 import com.ateam.identity.sign.util.MyToast;
 import com.team.hbase.widget.dialog.CustomProgressDialog;
 
@@ -23,7 +24,9 @@ public class AsyncParseSFZ extends AsyncTask<AsyncParseSFZ.SFZ, Integer, Map<Str
 		super();
 		this.mContext = context;
 		this.onReadSFZListener = onReadSFZListener;
-		parseAPI = new ParseSFZAPI(context.getApplicationInfo().dataDir);
+		MyApplication application=(MyApplication)context.getApplicationContext();
+		parseAPI = new ParseSFZAPI(application.getHandlerThread()
+				.getLooper(), application.getRootPath(), context);
 	}
 
 	@Override

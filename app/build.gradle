@@ -24,4 +24,6 @@ dependencies {
     compile 'com.helen.andbase:andbase-core:0.2.4'
     compile project(':HBase')
     compile project(':wheel')
+    compile files('libs/microlog4android-1.0.0.jar')
+    compile files('libs/idcardapi.jar')
 }

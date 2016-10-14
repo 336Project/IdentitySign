@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
-
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -19,33 +18,45 @@ public class SerialPortManager {
 	/**
 	 * 串口波特率
 	 */
-
-//	private static int BAUDRATE = 115200;
-	// private static final int BAUDRATE = 230400;
-	// private static final int BAUDRATE = 345600;
-	 private static int BAUDRATE = 460800;
+	private static int BAUDRATE = 460800;
 
 	public static boolean switchRFID = false;
 
-
 	final byte[] UP = { '1' };
 	final byte[] DOWN = { '0' };
-	
-	private static final String[] PATHS = {"/dev/ttyHS1","/dev/ttyHSL0","/dev/ttyHSL0","/dev/ttyHSL0"};
-	private static final String[] GPIO_DEVS = {"/sys/GPIO/GPIO13/value","/sys/class/pwv_gpios/pwv-seccpu/enable",
-		"/sys/class/pwv_gpios/as602-en/enable","/sys/class/pwv_gpios/as602-en/enable"};
-	private static final String[] VERSION = {"M802","M806","SIMT1200","COREWISE_V0"};
+
+	private static final String[] PATHS = { "/dev/ttyHS1", "/dev/ttyHSL0",
+			"/dev/ttyHSL0", "/dev/ttyHSL0", "/dev/ttyHSL0", "/dev/ttyHSL0",
+			"/dev/ttyHSL0", "/dev/ttyHSL0" };
+
+	private static final String[] GPIO_DEVS = { "/sys/GPIO/GPIO13/value",
+			"/sys/class/pwv_gpios/pwv-seccpu/enable",
+			"/sys/class/pwv_gpios/as602-en/enable",
+			"/sys/class/pwv_gpios/as602-en/enable",
+			"/sys/class/pwv_gpios/as602-en/enable",
+			"/sys/class/pwv_gpios/as602-en/enable",
+			"/sys/class/pwv_gpios/as602-en/enable",
+			"/sys/class/pwv_gpios/as602-en/enable" };
+	private static final String[] VERSION = { "M802", "M806", "A370",
+			"COREWISE_V0", "CFON640", "ZTE Blade A460", "CFON640_50",
+			"CFON640_43" };
 	/**
-	 * 串口设备路径
+	 * 串口设备路径 louliang add 2016.02.04 start 默认为：/dev/ttyHSL0
+	 * /sys/class/pwv_gpios/as602-en/enable louliang add 2016.02.04 end
 	 */
-	private static  String PATH = PATHS[0];
-	private static String GPIO_DEV = GPIO_DEVS[0];
-	static{
-		Log.i("whw", "MODEL="+android.os.Build.MODEL);
+	private static String PATH = PATHS[4];
+	private static String GPIO_DEV = GPIO_DEVS[4];
+	static {
+		Log.i("ll AS602 POWER MODEL NAME=", "MODEL=" + android.os.Build.MODEL);
+		// Toast.makeText(getApplicationContext(), "默认Toast样式",
+		// Toast.LENGTH_SHORT).show();
 		for (int i = 0; i < VERSION.length; i++) {
-			if(VERSION[i].equals(android.os.Build.MODEL)){
+			if (VERSION[i].equals(android.os.Build.MODEL)) {
 				PATH = PATHS[i];
+				// Log.i("ll AS602 POWER MODEL NAME=", "path="+PATH );
+
 				GPIO_DEV = GPIO_DEVS[i];
+				// Log.i("ll AS602 POWER MODEL NAME=", "gpio_dev ="+GPIO_DEV );
 				break;
 			}
 		}
@@ -102,13 +113,13 @@ public class SerialPortManager {
 	 * @return
 	 */
 	public void switchStatus() {
-		if(!isOpen){
+		if (!isOpen) {
 			return;
 		}
 		write(SWITCH_COMMAND);
 		Log.i("whw", "SWITCH_COMMAND hex=" + new String(SWITCH_COMMAND));
 		SystemClock.sleep(200);
-		if(!isOpen){
+		if (!isOpen) {
 			return;
 		}
 		switchRFID = true;
@@ -128,10 +139,8 @@ public class SerialPortManager {
 			try {
 				setUpGpio();
 				Log.i("whw", "setUpGpio status=" + getGpioStatus());
-				/* Open the serial port */
 				mSerialPort = new SerialPort(new File(PATH), BAUDRATE, 0);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
@@ -146,7 +155,7 @@ public class SerialPortManager {
 		}
 		return false;
 	}
-	
+
 	private boolean openSerialPort2() {
 		if (mSerialPort == null) {
 			try {
@@ -156,7 +165,7 @@ public class SerialPortManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			Log.i("whw", "mSerialPort="+mSerialPort);
+			Log.i("whw", "mSerialPort=" + mSerialPort);
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
 			mReadThread = new ReadThread();
@@ -196,11 +205,11 @@ public class SerialPortManager {
 		firstOpen = false;
 		mCurrentSize = 0;
 		switchRFID = false;
-		if(looperBuffer != null){
+		if (looperBuffer != null) {
 			looperBuffer = null;
 		}
 	}
-	
+
 	private void closeSerialPort2() {
 		if (mReadThread != null)
 			mReadThread.interrupt();
@@ -219,15 +228,12 @@ public class SerialPortManager {
 		firstOpen = false;
 		mCurrentSize = 0;
 		switchRFID = false;
-		if(looperBuffer != null){
+		if (looperBuffer != null) {
 			looperBuffer = null;
 		}
 	}
-	
-	
 
-	protected synchronized int read(byte buffer[], int waittime,
-			int interval) {
+	protected synchronized int read(byte buffer[], int waittime, int interval) {
 		if (!isOpen) {
 			return 0;
 		}
@@ -262,25 +268,21 @@ public class SerialPortManager {
 			if (mCurrentSize <= buffer.length) {
 				System.arraycopy(mBuffer, 0, buffer, 0, mCurrentSize);
 			}
-		}else{
-			//closeSerialPort2();
+		} else {
+			// closeSerialPort2();
 			SystemClock.sleep(100);
-			//openSerialPort2();
+			// openSerialPort2();
 		}
 		return mCurrentSize;
 	}
 
-
-	
 	protected synchronized int readFixedLength(byte buffer[], int waittime,
 			int requestLength) {
-         return readFixedLength(buffer, waittime, requestLength,15);
+		return readFixedLength(buffer, waittime, requestLength, 15);
 	}
-	
-
 
 	protected synchronized int readFixedLength(byte buffer[], int waittime,
-			int requestLength,int interval) {
+			int requestLength, int interval) {
 		if (!isOpen) {
 			return 0;
 		}
@@ -320,7 +322,7 @@ public class SerialPortManager {
 			if (mCurrentSize <= buffer.length) {
 				System.arraycopy(mBuffer, 0, buffer, 0, mCurrentSize);
 			}
-		}else{
+		} else {
 			closeSerialPort2();
 			SystemClock.sleep(100);
 			openSerialPort2();
@@ -396,14 +398,16 @@ public class SerialPortManager {
 						if (looperBuffer != null) {
 							byte[] buf = new byte[length];
 							System.arraycopy(buffer, 0, buf, 0, length);
-							Log.i("xuws", "recv buf=" + DataUtils.toHexString(buf));
+							Log.i("xuws",
+									"recv buf=" + DataUtils.toHexString(buf));
 							looperBuffer.add(buf);
-						} //else {
-							System.arraycopy(buffer, 0, mBuffer, mCurrentSize,length);
-							mCurrentSize += length;
-						//}
-						Log.i("whw", "mCurrentSize=" + mCurrentSize + "  length="
-								+ length );
+						} // else {
+						System.arraycopy(buffer, 0, mBuffer, mCurrentSize,
+								length);
+						mCurrentSize += length;
+						// }
+						Log.i("whw", "mCurrentSize=" + mCurrentSize
+								+ "  length=" + length);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -412,6 +416,5 @@ public class SerialPortManager {
 			}
 		}
 	}
-	
 
 }
