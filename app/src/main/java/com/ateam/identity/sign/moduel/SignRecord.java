@@ -17,18 +17,32 @@ public class SignRecord implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int id;
-    private String cardNum;         //学生身份证号
-    private String attendanceDate;  //签到时间
+    private String cardNum ;         //学生身份证号
+    private Long attendanceDate;  //签到时间
     private String teacherCardNum;
     private String classroom;
 
-    public SignRecord(String cardNum,String attendanceDate,String teacherCardNum,String classroom){
-        this.cardNum = cardNum;
-        this.attendanceDate = attendanceDate;
-        this.teacherCardNum = teacherCardNum;
-        this.classroom = classroom;
+//    public SignRecord(String cardNum,long attendanceDate,String teacherCardNum,String classroom){
+//        this.cardNum = cardNum;
+//        this.attendanceDate = attendanceDate;
+//        this.teacherCardNum = teacherCardNum;
+//        this.classroom = classroom;
+//    }
+
+    public Long getAttendanceDate() {
+        return attendanceDate;
     }
 
+    public void setAttendanceDate(Long attendanceDate) {
+        this.attendanceDate = attendanceDate;
+    }
+    public String getTeacherCardNum() {
+        return teacherCardNum;
+    }
+
+    public void setTeacherCardNum(String teacherCardNum) {
+        this.teacherCardNum = teacherCardNum;
+    }
     public int getId() {
         return id;
     }
@@ -45,20 +59,7 @@ public class SignRecord implements Serializable {
         this.cardNum = cardNum;
     }
 
-    public String getAttendanceDate() {
-        return attendanceDate;
-    }
 
-    public void setAttendanceDate(String attendanceDate) {
-        this.attendanceDate = attendanceDate;
-    }
-    public String getTeacherCardNum() {
-        return teacherCardNum;
-    }
-
-    public void setTeacherCardNum(String teacherCardNum) {
-        this.teacherCardNum = teacherCardNum;
-    }
 
     public String getClassroom() {
         return classroom;
@@ -68,4 +69,10 @@ public class SignRecord implements Serializable {
         this.classroom = classroom;
     }
 
+    @Override
+    public String toString() {
+        return "Student [id=" + id + ", cardNum=" + cardNum + ", cardNum="
+                + cardNum + ", teacherCardNum=" + teacherCardNum + ", classroom=" + classroom
+                + "]";
+    }
 }

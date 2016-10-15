@@ -57,10 +57,13 @@ public class SFZActivity extends PermissionActivity implements OnClickListener {
 	private OnReadSFZListener onReadSFZListener;
 	
 	private SignAccess mAccess;
+
+	private MyApplication mAPP;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sfz_activity);
+		mAPP = (MyApplication) getApplication();
 		initView();
 		initData();
 	}
@@ -112,7 +115,12 @@ public class SFZActivity extends PermissionActivity implements OnClickListener {
 				List<SignObject> signList = new ArrayList<SignObject>();
 				SignObject object = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(),SignObject.TYPE_AUTO);
 				signList.add(object);
-				SignRecord signRecord = new SignRecord(people.getPeopleIDCode(), SysUtil.getNowTime(),user.getCardNum(),user.getClassroom());
+//				SignRecord signRecord = new SignRecord(people.getPeopleIDCode(),SysUtil.time2Long(SysUtil.getNowTime()) ,user.getCardNum(),user.getClassroom());
+				SignRecord signRecord = new SignRecord();
+				signRecord.setTeacherCardNum(user.getCardNum());
+				signRecord.setCardNum(people.getPeopleIDCode());
+				signRecord.setAttendanceDate(SysUtil.time2Long(SysUtil.getNowTime()));
+				signRecord.setClassroom(mAPP.getClassroom());
 				signRecordDao.save(signRecord);
 				mAccess.sign(signList);
 			}

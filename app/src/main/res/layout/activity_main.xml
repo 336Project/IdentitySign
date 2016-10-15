@@ -255,7 +255,8 @@
             android:gravity="center"
             android:text="未到人员查询"
             android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            />
     </LinearLayout>
 
 </LinearLayout>

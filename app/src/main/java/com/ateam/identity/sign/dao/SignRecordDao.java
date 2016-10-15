@@ -6,7 +6,6 @@ package com.ateam.identity.sign.dao;
 import android.content.Context;
 
 import com.ateam.identity.sign.moduel.SignRecord;
-import com.ateam.identity.sign.moduel.Student;
 import com.team.hbase.dao.HBaseDao;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class SignRecordDao extends HBaseDao {
     }
     //根据老师的身份证查找学生信息
 
-    public List<SignRecord> findSignRecordByTeacherID(String teacherID, String classroom , String startDate , String endDate){
+    public List<SignRecord> findSignRecordByTeacherID(String teacherID, String classroom , long startDate , long endDate){
         return mDb.findAllByWhere(SignRecord.class, "teacherCardNum = '"+teacherID+"'"
                 +"and classroom = '"+classroom+"'"
                 +"and attendanceDate >= '"+startDate+"'"

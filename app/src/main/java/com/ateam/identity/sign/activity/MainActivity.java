@@ -201,7 +201,12 @@ public class MainActivity extends PermissionActivity implements OnClickListener 
                     signObject = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(), SignObject.TYPE_AUTO);
                     signList.add(signObject);
                     mAccess.sign(signList);
-                    SignRecord signRecord = new SignRecord(people.getPeopleIDCode(), SysUtil.getNowTime(), user.getCardNum(), user.getClassroom());
+                    SignRecord signRecord = new SignRecord();
+                    signRecord.setTeacherCardNum(user.getCardNum());
+                    signRecord.setCardNum(people.getPeopleIDCode());
+                    signRecord.setAttendanceDate(SysUtil.time2Long(SysUtil.getNowTime()));
+                    signRecord.setClassroom(currClassroom);
+//                    SignRecord signRecord = new SignRecord(people.getPeopleIDCode(), SysUtil.time2Long(SysUtil.getNowTime()), user.getCardNum(), user.getClassroom());
                     signRecordDao.save(signRecord);
                 } else {
                     isSign = false;
@@ -260,6 +265,7 @@ public class MainActivity extends PermissionActivity implements OnClickListener 
                 startActivity(new Intent(this, ManulSignInActivity.class));
                 break;
             case R.id.btn_class_query:
+                mMyApp.setClassroom(currClassroom);
                 removeRunnable();
                 startActivity(new Intent(this, ClassQueryActivity.class));
                 break;
