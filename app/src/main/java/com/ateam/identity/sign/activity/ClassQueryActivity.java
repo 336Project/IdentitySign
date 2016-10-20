@@ -250,6 +250,7 @@ public class ClassQueryActivity extends PermissionActivity implements View.OnCli
             }
             viewholder.getTextViewUsername().setText(item.getName());
             viewholder.getTextViewSchool().setText(mUser.getSchool());
+            viewholder.getTextViewTel().setText(item.getTelephone());
             StringBuffer sb = new StringBuffer();
             if(position+1<9){
                 sb.append("0"+(position+1)+".");

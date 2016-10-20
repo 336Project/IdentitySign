@@ -5,7 +5,7 @@ package com.ateam.identity.sign.access.I;
  * @TODO 接口访问url
  */
 public interface HURL {
-	String BASE_URL = "http://c641484739.xicp.net/jspx";
+	String BASE_URL = "http://www.rtkjedu.com/jspx";
 	//login
 	String URL_USER_LOGIN = "/webservice/app/login.do";
 	//查找学生列表

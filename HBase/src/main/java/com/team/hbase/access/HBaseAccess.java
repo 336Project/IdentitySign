@@ -227,6 +227,7 @@ public class HBaseAccess<T> {
 	 * @TODO 访问url，获取数据
 	 */
 	protected String _post(String url, List<NameValuePair> nvps) throws Exception {
+		Log.e("acess","url:"+url);
 		RequestConfig requestConfig=RequestConfig.custom()
 				.setConnectTimeout(10000)
 				.setSocketTimeout(10000)
