@@ -35,7 +35,7 @@ public class MyApplication extends Application{
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		CrashHandler.init(this);
+//		CrashHandler.init(this);
 		Installation.init(this);
 		Log.e("", "ip"+Installation.getAppId());
 		startService(new Intent(this, UnSignService.class));

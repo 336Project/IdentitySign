@@ -192,10 +192,10 @@ public class MainActivity extends PermissionActivity implements OnClickListener 
             public void onReadSuccess(People people) {
                 playRing();
                 updatePeople(people);
-                StudentDao studentDao = new StudentDao(MainActivity.this);
+//                StudentDao studentDao = new StudentDao(MainActivity.this);
                 SignRecordDao signRecordDao = new SignRecordDao(MainActivity.this);
                 User user = mMyApp.getUser();
-                if (studentDao.isCanSign(mSignNum.getText().toString(), mTextViewCard.getText().toString(), currClassroom)) {
+//                if (studentDao.isCanSign(mSignNum.getText().toString(), mTextViewCard.getText().toString(), currClassroom)) {
                     //签到
                     List<SignObject> signList = new ArrayList<SignObject>();
                     signObject = new SignObject(people.getPeopleIDCode(), SysUtil.getNowTime(), SignObject.TYPE_AUTO);
@@ -208,11 +208,11 @@ public class MainActivity extends PermissionActivity implements OnClickListener 
                     signRecord.setClassroom(currClassroom);
 //                    SignRecord signRecord = new SignRecord(people.getPeopleIDCode(), SysUtil.time2Long(SysUtil.getNowTime()), user.getCardNum(), user.getClassroom());
                     signRecordDao.save(signRecord);
-                } else {
-                    isSign = false;
-                    MyToast.showShort(MainActivity.this, "抱歉，你不是该班级的成员");
-                    postRunnable();
-                }
+//                } else {
+//                    isSign = false;
+//                    MyToast.showShort(MainActivity.this, "抱歉，你不是该班级的成员");
+//                    postRunnable();
+//                }
             }
 
             @Override
